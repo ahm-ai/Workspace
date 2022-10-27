@@ -42,6 +42,8 @@
 	bl = show-branch --color --list # git branch -vv
 	sq = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 	rb = "!git rebase -i --autosquash main"
+	cob = "!git branch | fzf | xargs -o git checkout"
+	rb = "!git rebase -i --autosquash main"
 [pager]
 	diff = false
 [rebase]
