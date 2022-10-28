@@ -31,18 +31,16 @@
     b = branch
     c = commit
     co = checkout
-    cob = checkout -b
+	bl = show-branch --color --list 
 
-	df = "!git diff --name-status "
+	dfm = "!git diff --name-status "
+	df = "!git diff --name-only HEAD~"
 
-	cms = "!git --no-pager log -15 --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-	stashes = stash list
-	amend = commit --amend --no-edit
-	ssm  = stash push -m $1  # Stash save with message
-	bl = show-branch --color --list # git branch -vv
-	sq = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
-	rb = "!git rebase -i --autosquash main"
+	cms = "!git --no-pager log -10 --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+
 	cob = "!git branch | fzf | xargs -o git checkout"
+
+	sq = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 	rb = "!git rebase -i --autosquash main"
 [pager]
 	diff = false
