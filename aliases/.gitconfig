@@ -42,6 +42,10 @@
 
 	sq = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 	rb = "!git rebase -i --autosquash main"
+
+	vw = "!gh pr view --web"
+	ci = "!gh pr checks"
+
 [pager]
 	diff = false
 [rebase]
