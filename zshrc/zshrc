@@ -6,7 +6,7 @@
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-
+#  https://dh4ihowhowe4s.cloudfront.net
 
 # Git stash untracked
 function gitSU {
