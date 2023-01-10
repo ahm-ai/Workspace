@@ -1,0 +1,61 @@
+
+function showDevices(){
+    ffmpeg -hide_banner -f avfoundation -list_devices true -i ""
+}
+
+function recNow(){
+    ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  output%03d.mp4
+}
+
+# function recordScreen(){
+#     # Best so far;
+#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 output.mp4
+#     #  Also works
+#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60  -aq 0 output.mp4
+#     #  Best so far;
+#     ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  output%03d.mp4
+#     # Splitting version
+#     sudo ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 5 -reset_timestamps 1 output%03d.mp4
+# }
+
+function splitLongVideo(){
+    videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
+    mkdir -p $videoPath
+    ffmpeg -i $1 -c copy -f segment -segment_time 5 -reset_timestamps 1 $videoPath/output%03d.mp4
+}
+
+
+# recordInSegments 5 seconds
+function recordInSegments(){
+    videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
+    mkdir -p $videoPath
+    echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time $1 -reset_timestamps 1 $videoPath/output%03d.mp4
+}
+
+
+function convertAllFiles(){
+    # for each file in folder run the function convertWhisper
+    cd $1 &&
+    for file in *.mp4; do convertWhisper $file; done
+}
+
+
+function recordAudio(){
+    if [ -z "$1" ]
+    then
+        echo "RECORDING"
+        ffmpeg -y -f avfoundation -i ":0" -t 60 output2.mp3 
+    else
+        echo "START RECORDING IN $1 SECONDS"
+        ffmpeg -f avfoundation -i ":0" -f segment -segment_time 5 -reset_timestamps 1 output%03d.mp3
+    fi
+}
+
+
+function convertWhisper(){
+   echo "Converting $1"
+   #    whisper $1 --fp16 False  --model tiny --language English --beam_size 1
+   whisper $1 --fp16 False  --model base --language English --beam_size 1
+}
+
+
