@@ -1,5 +1,5 @@
-cp ./zshrc/.ASCII_colors  ~/.ASCII_colors &&
-cp ./zshrc/.ffmpegCommands ~/.ffmpegCommands
+cp zshrc/.ASCII_colors  ~/.ASCII_colors &&
+cp zshrc/.ffmpegCommands ~/.ffmpegCommands
 
 
 # Add to your .zshrc file:
@@ -7,4 +7,4 @@ cp ./zshrc/.ffmpegCommands ~/.ffmpegCommands
 # source ~/.ASCII_colors 
 
 # Enable latest changes
-source ~/.zshrc
+# source ~/.zshrc
