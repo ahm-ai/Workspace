@@ -107,3 +107,6 @@ function convertWhisper(){
 # 1. brew install ffmpeg
 # 2. brew install rust
 # 3. pip3 install git+https://github.com/openai/whisper.git 
+# 4. pip3 install setuptools-rust
+
+
