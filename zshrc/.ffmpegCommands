@@ -3,6 +3,8 @@
 # 1:0 Speakers
 # 1:1 Airpods
 # EXAMPLE: avfoundation -i "2:0"
+
+# IN USE recNow && splitConvert
 function showDevices(){
     ffmpeg -hide_banner -f avfoundation -list_devices true -i ""
 }
@@ -10,7 +12,17 @@ function showDevices(){
 function recNow(){
     videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
     mkdir -p $videoPath
+    chmod 777 $videoPath
+
     ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  $videoPath/video.mp4
+
+    # ON CONTROL-C Execute:
+    onCompleteSplitConvert $videoPath
+
+    # open file in VSC 
+    code ${videoPath}/transcript.srt
+
+    echo -e "\n ${BBlue} 🤖 COMPLETE ${ENDCOLOR} :  ${videoPath}/transcript.srt \n " 
 }
 
 # function recordScreen(){
@@ -24,11 +36,6 @@ function recNow(){
 #     sudo ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 5 -reset_timestamps 1 output%03d.mp4
 # }
 
-function splitLongVideo(){
-    videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
-    mkdir -p $videoPath
-    ffmpeg -i $1 -c copy -f segment -segment_time 5 -reset_timestamps 1 $videoPath/output%03d.mp4
-}
 
 
 # recordInSegments 5 seconds
@@ -38,11 +45,41 @@ function recordInSegments(){
     echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time $1 -reset_timestamps 1 $videoPath/output%03d.mp4
 }
 
+#  =================== TRANSOFRMATIONS  ===================
 
-function convertAllFiles(){
-    # for each file in folder run the function convertWhisper
+function onCompleteSplitConvert(){
+
+    echo -e "\n ${Blue} Splitting :: ${1}/video.mp4 ${ENDCOLOR} \n" &&
+    splitLongVideo $1 &&
+    echo -e "\n ${Blue} Converting :: ${1}/video-part_*.mp4 ${ENDCOLOR} \n"  &&
+    whisperAllVideoParts $1 &&
+    # JOIN_ALL_TEXT FILES
     cd $1 &&
-    for file in *.mp4; do convertWhisper $file; done
+    cat *.srt > transcript.srt  &&
+    cat *.txt > transcript.txt  &&
+    echo -e "\n ${Blue} Cleaning up :: ${1}/video-part_*.mp4 ${ENDCOLOR} \n"  &&
+    cleanup $1 &&
+}
+
+function splitLongVideo(){
+    # In chunks of 15 seconds :: $1 is the full path ~/Downloads/<FILENAME>
+    ffmpeg -i $1/video.mp4 -c copy -f segment -segment_time 15 -reset_timestamps 1 $1/video-part_%03d.mp4
+}
+
+
+function whisperAllVideoParts(){
+    # for each file in folder run the function convertWhisper :: $1 is the full path ~/Downloads/<FILENAME>
+    cd $1 &&
+    # for file in *.mp4; do convertWhisper $file; done
+    for file in *.mp4; do if echo "$file" | grep -q "part"; then
+     convertWhisper "$file"; fi;
+    done
+}
+
+function cleanup(){
+    # Remove all files that contain "part"
+    cd $1 &&
+    find . -name "*part*" -type f -delete
 }
 
 
@@ -59,9 +96,10 @@ function recordAudio(){
 
 
 function convertWhisper(){
-   echo "Converting $1"
+  echo -e "${Green}" 
    #    whisper $1 --fp16 False  --model tiny --language English --beam_size 1
    whisper $1 --fp16 False  --model base --language English --beam_size 1
+  echo -e "${ENDCOLOR}" 
 }
 
 
