@@ -9,43 +9,46 @@ function showDevices(){
     ffmpeg -hide_banner -f avfoundation -list_devices true -i ""
 }
 
-function recNow(){
+function openSpeech(){
+    open -a "Google Chrome" 'https://dh4ihowhowe4s.cloudfront.net/?speech'
+    open -a "Audio MIDI Setup"
+}
+
+function makeFolder(){
     videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
     mkdir -p $videoPath
     chmod 777 $videoPath
+}
 
-    ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  $videoPath/video.mp4
+# ============= SCRIPTS ================
+
+# RECORD LONG VIDEO
+function recNow(){
+    openSpeech 
+    makeFolder # $videoPath will be available after this
+
+    # RECORD VIDEO
+    ffmpeg -y -f avfoundation -i "1:BlackHole 2ch" -async 2 -vsync 2 -r 60 -aq 0  $videoPath/video.mp4
 
     # ON CONTROL-C Execute:
     onCompleteSplitConvert $videoPath
-
     # open file in VSC 
-    code ${videoPath}/transcript.srt
-
     echo -e "\n ${BBlue} 🤖 COMPLETE ${ENDCOLOR} :  ${videoPath}/transcript.srt \n " 
 }
 
-# function recordScreen(){
-#     # Best so far;
-#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 output.mp4
-#     #  Also works
-#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60  -aq 0 output.mp4
-#     #  Best so far;
-#     ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  output%03d.mp4
-#     # Splitting version
-#     sudo ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 5 -reset_timestamps 1 output%03d.mp4
-# }
 
-
-
-# recordInSegments 5 seconds
+# RECORD IN SEGMENTS OF  5 seconds
 function recordInSegments(){
-    videoPath=~/Downloads/$(date +"%Y-%m-%d_%H-%M")
-    mkdir -p $videoPath
-    echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time $1 -reset_timestamps 1 $videoPath/output%03d.mp4
+    makeFolder
+
+    curl -X POST http://localhost:8080/watch \
+    -H "Content-Type: application/json" -d "{\"folderName\":\"$videoPath\"}"
+
+    echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:BlackHole 2ch" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 28 -reset_timestamps 1 $videoPath/output%03d.mp4
 }
 
-#  =================== TRANSOFRMATIONS  ===================
+
+#  =================== TRANSFORMATIONS  ===================
 
 function onCompleteSplitConvert(){
 
@@ -109,4 +112,13 @@ function convertWhisper(){
 # 3. pip3 install git+https://github.com/openai/whisper.git 
 # 4. pip3 install setuptools-rust
 
-
+# function recordScreen(){
+#     # Best so far;
+#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 output.mp4
+#     #  Also works
+#     ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60  -aq 0 output.mp4
+#     #  Best so far;
+#     ffmpeg -y -f avfoundation -i "1:0" -async 2 -vsync 2 -r 60 -aq 0  output%03d.mp4
+#     # Splitting version
+#     sudo ffmpeg -y -f avfoundation -i "1:1" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 5 -reset_timestamps 1 output%03d.mp4
+# }
