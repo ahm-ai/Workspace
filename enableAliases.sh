@@ -1,5 +1,3 @@
-git config --global user.email "user@gmail.com"
-git config --global user.name "ahm-ai"
 git config --global filter.lfs.process "git-lfs filter-process"
 git config --global filter.lfs.required true
 git config --global filter.lfs.clean "git-lfs clean -- %f"
