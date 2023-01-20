@@ -37,3 +37,4 @@ git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(m
 git config --global alias.undo "!git reset HEAD~1 --mixed"
 
 echo "🚀 Aliases enabled"
+
