@@ -63,6 +63,12 @@ function recordInSegments(){
     echo "🤖 Wait until the last file is processed"
     sleep 30
 
+    kill -9 $(lsof -ti:8080)
+}
+
+function joinAllTranscripts(){
+   cat *.srt > transcript.srt  &&
+   cat *.txt > transcript.txt  &&
 }
 
 
