@@ -41,10 +41,19 @@ function recNow(){
 function recordInSegments(){
     makeFolder
 
+    # Sets the watcher
     curl -X POST http://localhost:8080/watch \
     -H "Content-Type: application/json" -d "{\"folderName\":\"$videoPath\"}"
 
-    echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:BlackHole 2ch" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 28 -reset_timestamps 1 $videoPath/output%03d.mp4
+    sleep 1
+
+    # Starts Recording in chuncks of 28 seconds
+    echo $PSS | sudo -S  ffmpeg -y -f avfoundation -i "1:BlackHole 2ch" -async 2 -vsync 2 -r 60 -aq 0  -f segment -segment_time 25 -reset_timestamps 1 $videoPath/output%03d.mp4
+
+
+    echo "🤖 Wait until the last file is processed"
+    sleep 30
+
 }
 
 

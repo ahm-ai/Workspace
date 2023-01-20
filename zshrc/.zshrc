@@ -8,23 +8,6 @@
 
 #  https://dh4ihowhowe4s.cloudfront.net
 
-# Git stash untracked
-function gitSU {
-  git stash --keep-index -u
-}
-
-# Git revert one
-function gitR {
-  git reset --soft HEAD~1
-}
-
-function gitbr {
-  git branch -r | grep -v HEAD | while read b; do git log --color --format="%ci _%C(magenta)%cr %C(bold cyan)$b%Creset %s %C(bold blue)<%an>%Creset" $b | head -n 1; done | sort -r | cut -d_ -f2- | sed 's;origin/;;g' | head -10
-}
-
-function gitbl {
-  git show-branch --color --list | grep -v HEAD | while read b; do git log --color --format="%ci _%C(magenta)%cr %C(bold cyan)$b%Creset %s %C(bold blue)<%an>%Creset" $b | head -n 1; done | sort -r | cut -d_ -f2- | sed 's;origin/;;g' | head -10
-}
 
 
 #  KILL PORTS
