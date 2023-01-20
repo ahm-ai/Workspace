@@ -30,7 +30,10 @@ git config --global alias.co checkout
 git config --global alias.del "branch -D"
 git config --global alias.bl "show-branch --color --list"
 git config --global alias.clean "!git reset --hard"
-git config --global alias.undo "!git reset HEAD~1 --mixed"
+
+# Stash only changes no staged files
+git config --global alias.stash-c "!git stash --keep-index"
+
 
 # Diffing
 git config --global alias.df "!git diff --name-only $1"
