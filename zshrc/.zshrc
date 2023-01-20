@@ -8,7 +8,8 @@
 
 #  https://dh4ihowhowe4s.cloudfront.net
 
-
+source ~/.ffmpegCommands 
+source ~/.ASCII_colors 
 
 #  KILL PORTS
 function killPort {

@@ -36,9 +36,18 @@ function recNow(){
     echo -e "\n ${BBlue} 🤖 COMPLETE ${ENDCOLOR} :  ${videoPath}/transcript.srt \n " 
 }
 
+function startQueueServer(){
+    cd ~/Documents/gitUtils/SpeechAi/ && go run main.go
+}
+
 
 # RECORD IN SEGMENTS OF  5 seconds
 function recordInSegments(){
+
+    startQueueServer &
+
+    sleep 1
+
     makeFolder
 
     # Sets the watcher
@@ -58,7 +67,7 @@ function recordInSegments(){
 
 
 #  =================== TRANSFORMATIONS  ===================
-
+# Use when you have a huge video that you want to split and convert
 function onCompleteSplitConvert(){
 
     echo -e "\n ${Blue} Splitting :: ${1}/video.mp4 ${ENDCOLOR} \n" &&
@@ -78,7 +87,7 @@ function splitLongVideo(){
     ffmpeg -i $1/video.mp4 -c copy -f segment -segment_time 15 -reset_timestamps 1 $1/video-part_%03d.mp4
 }
 
-
+# Use when you have the parts and only need to convert
 function whisperAllVideoParts(){
     # for each file in folder run the function convertWhisper :: $1 is the full path ~/Downloads/<FILENAME>
     cd $1 &&
