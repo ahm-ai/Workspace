@@ -30,7 +30,12 @@ git config --global alias.co checkout
 # Custom Utils
 git config --global alias.del "branch -D"
 git config --global alias.bl "show-branch --color --list"
-git config --global alias.clean "!git reset --hard"
+git config --global alias.rs "!git reset --hard"
+
+# The simpler way to delete all branches but keeping others like "tools" 
+git config --global alias.purge_bl "!git branch | grep -v 'tools' | grep -v 'tool' | xargs git branch -D "
+
+# Undo the commit
 git config --global alias.undo "!git reset HEAD~1 --mixed"
 
 # Stash only changes no staged files
@@ -53,6 +58,9 @@ git config --global alias.sq "!git log -n 50 --pretty=format:'%h %s' --no-merges
 # Git CLI
 git config --global alias.vw "!gh pr view --web"
 git config --global alias.ci "!gh pr checks"
+
+# List Aliases
+git config --global alias.alias "! git config --get-regexp ^alias\. | sed -e s/^alias\.// -e s/\ /\ =\ /"
 
 # Experimental
 git config --global alias.rb "!git rebase -i --autosquash main"
