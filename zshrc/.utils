@@ -1,0 +1,14 @@
+
+
+
+// Backup files that have been changed in the last commit
+function backup() {
+	git diff --name-only HEAD~1 | xargs -I {} dirname ~/Downloads/backup/{} | xargs -I {} mkdir -p {}
+
+	git diff --name-only HEAD~1 | xargs -I {} cp -r {} ~/Downloads/backup/{}
+}
+
+
+function restore() {
+	rsync -a --update ~/Downloads/backup/ .
+}
