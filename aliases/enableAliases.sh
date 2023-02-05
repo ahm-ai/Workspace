@@ -5,6 +5,7 @@ git config --global filter.lfs.smudge "git-lfs smudge -- %f"
 
 git config --global pull.rebase true
 git config --global pull.ff only
+git config --global --add --bool push.autoSetupRemote true
 
 git config --global color.ui auto
 git config --global color.branch.current "yellow reverse"
