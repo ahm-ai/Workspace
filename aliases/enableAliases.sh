@@ -68,6 +68,8 @@ git config --global alias.rb "!git rebase -i --autosquash main"
 git config --global alias.ls "log -1 HEAD --stat --no-pager"
 
 
+# Commit Aliases
+git config --global alias.amd "!git commit --amend --no-edit"
 
 echo "🚀 Aliases enabled"
 
