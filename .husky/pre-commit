@@ -7,9 +7,9 @@ echo "Linting..."
 
 # Find all modified .js files in the current directory
 # Echo files changes
-echo "Files changed:" + $(git diff --name-only | grep \\\\.js)
+echo "Files changed:" + $(git diff --name-only  | grep '.js$' )
 
-git diff --name-only | grep \\\\.js | xargs eslint --fix
+git diff --name-only  | grep '.js$' | xargs eslint --fix
 
 echo "Linting complete."
 
