@@ -32,3 +32,23 @@ function getPluginsZsh {
 
 
 
+function runTest {
+  # git status -s | grep ".tsx\|.ts\|.js" | sed "s/\M//" | xargs yarn react-scripts test --
+  git status -s | grep ".tsx\|.ts\|.js" | sed "s/\M//" | xargs npm run test --
+}
+
+function format {
+  git status -s | grep ".tsx\|.ts\|.js" | sed "s/\M//" | sed "s/\??//" | sed "s/\A//" | xargs npx prettier --write
+}
+
+function formatR {
+  npx prettier --write "$1/**/*.{js,jsx,json,ts,tsx}"
+}
+
+function cleanStaleBranches {
+
+  git fetch --all --prune
+  git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
+  git branch --merged | grep -v \* | xargs !git branch -D
+}
+
