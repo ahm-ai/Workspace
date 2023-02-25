@@ -40,7 +40,7 @@ git config --global alias.purge_bl "!git branch | grep -v 'tools' | grep -v 'too
 git config --global alias.undo "!git reset HEAD~1 --mixed"
 
 # Stash only changes no staged files
-git config --global alias.stash-c "!git stash --keep-index"
+git config --global alias.stu "!git stash --keep-index"
 
 
 # Diffing
@@ -53,7 +53,7 @@ git config --global alias.cms "!git --no-pager log -10 --graph --pretty=format:'
 git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(green)(%cr) [%an]' --abbrev-commit -30"
 
 # Using FZF
-git config --global alias.cob "!git branch | fzf | xargs -o git checkout"
+git config --global alias.cob "!git show-branch --color --list | fzf | xargs -o git checkout"
 git config --global alias.sq "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 
 # Git CLI
