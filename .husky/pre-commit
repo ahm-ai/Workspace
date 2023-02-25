@@ -15,6 +15,8 @@ do
     # Run Jest with coverage and store the result
     coverage=$(npx jest --coverage "${file%.*}.spec.js" | grep "Statements" | awk '{print $4}' | tr -d '%')
 
+    echo "Coverage for ${file%.*}.spec.js is ${coverage}%."
+
     # Check if coverage is less than 80%
     if [ $coverage -lt 80 ]
     then
