@@ -3,16 +3,28 @@
 
 #!/bin/bash
 
-echo "----- Running tests..."
-for file in *.js
+# Find all .js files in the current directory
+#!/bin/bash
+
+# Find all modified .js files in the current directory
+for file in $(git status -s | grep '^M' | grep -E '\.js$' | awk '{print $2}')
 do
+  # Check if a corresponding .spec.js file exists
   if [ -e "${file%.*}.spec.js" ]
   then
+    # Run Jest with coverage and store the result
     coverage=$(jest --coverage "${file%.*}.spec.js" | grep "Statements" | awk '{print $4}' | tr -d '%')
+
+    # Check if coverage is less than 80%
     if [ $coverage -lt 80 ]
     then
-      echo "Tests must have at least 80% coverage." >&2
+      echo "Tests for ${file%.*}.spec.js must have at least 80% coverage." >&2
       exit 1
     fi
+  else
+    # No corresponding .spec.js file found
+    echo "No tests found for ${file}."
+    exit 1
   fi
 done
+
