@@ -21,7 +21,7 @@
     "husky": "^8.0.3"
   },"husky": {
   "hooks": {
-    "pre-push": "./pre-commit.sh"
+    "pre-push": "./pre-push.sh"
   }
 }
 }
