@@ -1,7 +1,5 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 #!/bin/bash
+. "$(dirname -- "$0")/_/husky.sh"
 
 # Find all .js files in the current directory
 #!/bin/bash
