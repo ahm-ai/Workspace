@@ -3,8 +3,14 @@
 
 
 
+echo "Linting..."
+
+# Find all modified .js files in the current directory
 
 git diff --name-only | grep \\\\.js | xargs eslint --fix
+
+echo "Linting complete."
+
 
 # # Find all modified .js files in the current directory
 # #!/bin/bash
