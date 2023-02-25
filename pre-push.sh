@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Running tests..."
+echo "----- Running tests..."
 for file in *.js
 do
   if [ -e "${file%.*}.spec.js" ]
