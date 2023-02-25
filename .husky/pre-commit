@@ -1,0 +1,40 @@
+#!/bin/bash
+. "$(dirname -- "$0")/_/husky.sh"
+
+
+
+
+git diff --name-only | grep \\\\.js | xargs eslint --fix
+
+# # Find all modified .js files in the current directory
+# #!/bin/bash
+
+# # Parse the coverage-final.json file with jq
+# coverage=$(jq -r '.[].path + " " + (.total.statements | tostring) + " " + (.covered.statements | tostring)' coverage-final.json)
+
+# # Iterate over the coverage results for each file
+# while read -r line
+# do
+#   # Extract the filename, total statements, and covered statements
+#   filename=$(echo "$line" | cut -d ' ' -f 1)
+#   total=$(echo "$line" | cut -d ' ' -f 2)
+#   covered=$(echo "$line" | cut -d ' ' -f 3)
+
+#   # Calculate the coverage percentage
+#   if [ $total -gt 0 ]
+#   then
+#     coverage=$(echo "scale=2; $covered / $total * 100" | bc)
+#   else
+#     coverage=0
+#   fi
+
+#   echo "Coverage for $filename is $coverage%."
+
+#   # Check if coverage is less than 80%
+#   if [ $(echo "$coverage < 80" | bc) -eq 1 ]
+#   then
+#     echo "Tests for $filename must have at least 80% coverage." >&2
+#     exit 1
+#   fi
+# done <<< "$coverage"
+
