@@ -4,6 +4,8 @@
 # Run JEST
 npx jest -o --coverage --coverageReporters="json-summary" 
 
+echo "\n"
+
 # Run Valdiation
 node .husky/hook_validate.js
 
