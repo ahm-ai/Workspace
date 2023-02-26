@@ -9,7 +9,7 @@ const coverageSummary = JSON.parse(fs.readFileSync(COVERAGE_SUMMARY_FILE, 'utf8'
 
 if (coverageSummary.total.lines.pct === 'Unknown') {
 //   console.log('Coverage percentage is unknown');
-console.log('\u001b[32m \n ✨ Continue \n \u001b[0m');
+// console.log('\u001b[32m \n ✨ Continue \n \u001b[0m');
   process.exit(0);
 }
 
@@ -20,8 +20,6 @@ const overallCoveragePercentage = Object.keys(coverageSummary).filter((key)=>{
     }
     return false;
 })
-
-
 
 
 if (!overallCoveragePercentage.length) {
