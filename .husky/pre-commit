@@ -2,6 +2,13 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 
+# Run JEST
+
+npx jest -o --coverage --coverageReporters="json-summary" 
+
+
+node .husky/hook_validate.js
+
 
 echo "Linting..."
 
