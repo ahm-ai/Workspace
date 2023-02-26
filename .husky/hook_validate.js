@@ -4,6 +4,7 @@ const COVERAGE_SUMMARY_FILE = './coverage/coverage-summary.json';
 const MINIMUM_COVERAGE_PERCENTAGE = 80;
 
 const coverageSummary = JSON.parse(fs.readFileSync(COVERAGE_SUMMARY_FILE, 'utf8'));
+
 console.log(coverageSummary);
 
 if (coverageSummary.total.lines.pct === 'Unknown') {
@@ -21,12 +22,14 @@ const overallCoveragePercentage = Object.keys(coverageSummary).filter((key)=>{
 })
 
 
-console.log(overallCoveragePercentage);
+
 
 if (!overallCoveragePercentage.length) {
-  console.log('\u001b[32m ✨ Great test coverage \u001b[0m');
+  console.log('\u001b[32m \n ✨ Great test coverage  \n \u001b[0m');
   process.exit(0);
 } else {
-  console.error('\u001b[31m Coverage is insufficient  \u001b[0m');
+  console.error('\u001b[31m \n 🐙 Coverage is insufficient  \n \u001b[0m');
+
+  console.log( "\n", overallCoveragePercentage , "\n");
   process.exit(1);
 }

@@ -1,7 +1,6 @@
 #!/bin/bash
 . "$(dirname -- "$0")/_/husky.sh"
 
-
 # Run JEST
 npx jest -o --coverage --coverageReporters="json-summary" 
 
