@@ -5,7 +5,7 @@ const MINIMUM_COVERAGE_PERCENTAGE = 80;
 
 const coverageSummary = JSON.parse(fs.readFileSync(COVERAGE_SUMMARY_FILE, 'utf8'));
 
-console.log(coverageSummary);
+// console.log(coverageSummary);
 
 if (coverageSummary.total.lines.pct === 'Unknown') {
 //   console.log('Coverage percentage is unknown');
