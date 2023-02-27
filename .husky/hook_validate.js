@@ -19,7 +19,7 @@ const overallCoveragePercentage = Object.keys(coverageSummary).filter((key)=>{
         return true;
     }
     return false;
-})
+});
 
 
 if (!overallCoveragePercentage.length) {

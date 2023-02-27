@@ -5,9 +5,7 @@ function sum(a, b) {
 
 
 function sum2(a, b) {
-  return a + b;
-
-  
+  return a + b; 
 }
 
 

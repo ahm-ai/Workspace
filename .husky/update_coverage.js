@@ -5,8 +5,8 @@ const { execSync } = require('child_process');
 const gitStatus = execSync('git diff --cached --name-status').toString();
 const jsFiles = gitStatus
   .split('\n')
-  .filter(line => line.startsWith(' M ') && line.endsWith('.js'))
-  .map(line => line.substring(3));
+  .filter(line => line.trim().startsWith('M') && line.endsWith('.js'))
+  .map(line => line.replace('M', '').trim());
 
 
 console.log(jsFiles);
