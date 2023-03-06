@@ -53,7 +53,7 @@ git config --global alias.cms "!git --no-pager log -10 --graph --pretty=format:'
 git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(green)(%cr) [%an]' --abbrev-commit -30"
 
 # Using FZF
-git config --global alias.cob "!git show-branch --color --list | fzf | xargs -o git checkout"
+git config --global alias.cob "!f() { git checkout $(git branch | fzf --preview 'git log -n 1 --color=always  '); }; f"
 git config --global alias.sq "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 
 # Git CLI
