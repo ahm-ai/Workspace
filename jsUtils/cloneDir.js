@@ -1,44 +1,21 @@
 const fs = require('fs');
 const path = require('path');
-const originPath = [
-    '/Users/home/Documents/NodeFull-Stack/apps/_OCR/package.json'
-];
-
-
-
-const toPath= '/Users/home/Documents/AhTools/LinterTs/src'
 
 let  files =  process.argv.slice(2);
 files  = files.map(el => el.replace(/\/ /gi, "/"))
 files  = files.map(el => el.replace(/\"/gi, ""))
 
+const toPath= '/Users/home/Documents/AhTools/LinterTs/src'
 
+copyFilesFromTo(files, toPath);
 
-console.log(files);
-backupFiles(files, toPath);
-
-
-// Validate the source directory path
-if (!sourcePath) {
-  console.error('Usage: node index.js <source directory>');
-  process.exit(1);
-} else if (!fs.existsSync(sourcePath) || !fs.statSync(sourcePath).isDirectory()) {
-  console.error('Invalid source directory:', sourcePath);
-  process.exit(1);
-}
-
-
-
-
-// Copy the directory recursively
-// copyFilesToBackup(sourcePath, destinationPath);
-
-//  git status --porcelain | cut -c3- | xargs node ~/Documents/AhTools/jsUtils/cloneDir.js     
+// From Git
+// git status --porcelain | cut -c3- | xargs node ~/Documents/AhTools/jsUtils/cloneDir.js     
 // git status --porcelain | cut -c3- | sed "s|^|'$(pwd)/|" | sed "s|$|'|" | tr '\n' ' ' | xargs node ~/Documents/AhTools/jsUtils/cloneDir.js     
 
 
 
-function backupFiles(origin, to = "") {
+function copyFilesFromTo(origin, to = "") {
   const backupDir = path.join(to); // full path to backup directory
 
   if (!fs.existsSync(backupDir)) {
