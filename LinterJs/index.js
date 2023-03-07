@@ -11,6 +11,14 @@ function sum3(a, b) {
   return a + b;
 }
 
-const x = () => 1;
+const x = 'hello';
+
+if (x != undefined) {
+  if (y === 2) {
+    // ...
+  }
+}
+
+const xs = () => 1;
 
 module.exports = sum;
