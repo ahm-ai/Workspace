@@ -1,0 +1,30 @@
+
+function getTor(){
+    cd ~/Downloads &&
+    transmission-remote -a "$1"
+}
+
+function listTor(){
+    cd ~/Downloads &&
+    transmission-remote -l
+}
+
+function startTor(){
+    cd ~/Downloads &&
+    transmission-daemon
+}
+
+function stopTor(){
+    cd ~/Downloads &&
+    transmission-remote --exit
+}
+
+function cleanTor(){
+    cd ~/Downloads &&
+    transmission-remote -t all -r
+}
+
+function deleteTor(){
+    transmission-remote -t "$1" --remove-and-delete
+}
+
