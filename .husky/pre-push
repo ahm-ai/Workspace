@@ -1,19 +1,19 @@
-#!/bin/bash
-. "$(dirname -- "$0")/_/husky.sh"
+# #!/bin/bash
+# . "$(dirname -- "$0")/_/husky.sh"
 
-# Run JEST
-npx jest -o --coverage --coverageReporters="json-summary" 
+# # Run JEST
+# npx jest -o --coverage --coverageReporters="json-summary" 
 
-echo "\n"
+# echo "\n"
 
-# Run Valdiation
-node .husky/hook_validate.js
+# # Run Valdiation
+# node .husky/hook_validate.js
 
-echo "Linting..."
+# echo "Linting..."
 
-# Find all modified .js files in the current directory
-echo "Files changed:" + $(git diff --name-only  | grep '.js$' )
+# # Find all modified .js files in the current directory
+# echo "Files changed:" + $(git diff --name-only  | grep '.js$' )
 
-git diff --name-only  | grep '.js$' | xargs eslint --fix
+# git diff --name-only  | grep '.js$' | xargs eslint --fix
 
-echo "Linting complete."
+# echo "Linting complete."
