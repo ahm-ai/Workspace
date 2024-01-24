@@ -16,5 +16,5 @@ echo -e "\033[0;32m$MODIFIED_FILES\033[0m"
 
 # Run ESLint on these files
 for file in $MODIFIED_FILES; do
-    npx eslint "$REPO_PATH/$file" --config "./.eslintrc.json" 
+        npx eslint "$REPO_PATH/$file"
 done
