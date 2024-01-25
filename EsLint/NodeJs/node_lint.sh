@@ -25,7 +25,14 @@ for file in "${FILTERED_FILES[@]}"; do
     echo -e "\033[0;32m$file\033[0m"
 done
 
+
+# Run ESLint on these files
+for file in "${FILTERED_FILES[@]}"; do
+    npx eslint "$REPO_PATH/$file" --config "./.eslintrc.js"
+done
+
+
 # Run ESLint on these files in one line
-npx eslint $(printf "%s " "${FILTERED_FILES[@]/#/$REPO_PATH/}") --config "./.eslintrc.js"
+# npx eslint $(printf "%s " "${FILTERED_FILES[@]/#/$REPO_PATH/}") --config "./.eslintrc.js"
 
 # RUN AS ./react_lint.sh /path/to/your/repo 'node_modules|dist'
