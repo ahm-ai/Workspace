@@ -33,9 +33,13 @@ git config --global alias.del "branch -D"
 git config --global alias.rmlocalBranches "!git branch | grep -v \"^\\*\" | xargs git branch -D"
 git config --global alias.bl "show-branch --color --list"
 git config --global alias.rs "!git reset --hard"
+git config --global alias.pullr "!f() { git stash; git pull origin main --rebase; git stash pop; }; f"
+
 
 # The simpler way to delete all branches but keeping others like "tools" 
-git config --global alias.purge_bl "!git branch | grep -v 'tools' | grep -v 'tool' | xargs git branch -D "
+git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs -I {} git branch -D {}; }; f"
+``
+
 
 # Undo the commit
 git config --global alias.undo "!git reset HEAD~1 --mixed"
