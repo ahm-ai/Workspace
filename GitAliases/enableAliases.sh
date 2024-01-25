@@ -30,6 +30,7 @@ git config --global alias.co checkout
 
 # Custom Utils
 git config --global alias.del "branch -D"
+git config --global alias.rmlocalBranches "!git branch | grep -v \"^\\*\" | xargs git branch -D"
 git config --global alias.bl "show-branch --color --list"
 git config --global alias.rs "!git reset --hard"
 
