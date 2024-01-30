@@ -1,88 +1,150 @@
 {
-    "security.workspace.trust.untrustedFiles": "open",
-    "code-runner.clearPreviousOutput": true,
-    "code-runner.enableAppInsights": false,
-    "code-runner.runInTerminal": true,
-    "editor.inlineSuggest.enabled": true,
-    "go.toolsManagement.autoUpdate": true,
-    "editor.accessibilitySupport": "off",
-    "workbench.colorTheme": "Dracula",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "workbench.startupEditor": "none",
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "terminal.external.osxExec": "iTerm.app",
-    "terminal.integrated.shell.osx": "/bin/zsh",
-    "[typescriptreact][javascript][javascriptreact][typescript]": {
-    },
-    "[scss]": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "vscode.css-language-features"
-    },
-    "[css]": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+  "security.workspace.trust.untrustedFiles": "open",
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.enableAppInsights": false,
+  "code-runner.runInTerminal": true,
+  "editor.inlineSuggest.enabled": true,
+  "go.toolsManagement.autoUpdate": true,
+  "editor.accessibilitySupport": "off",
+  "workbench.colorTheme": "Dracula",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.startupEditor": "none",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[typescriptreact][javascript][javascriptreact][typescript]": {},
+  "[scss]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {},
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "window.commandCenter": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "bazel.enableCodeLens": true,
+  "bazel.queriesShareServer": true,
+  "explorer.confirmDragAndDrop": false,
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "go.formatTool": "gofmt",
+  "editor.wordWrap": "on",
+  "window.zoomLevel": -1,
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": [
+    "--fix",
+    "--enable=godot,misspell,protogetter,whitespace,gofumpt,reassign,revive"
+  ],
+  "go.lintOnSave": "file",
+  "[go]": {
     "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "cSpell.enabled": false,
+  "workbench.colorCustomizations": {
+    "titleBar.activeForeground": "#FDF8FC",
+    "activityBar.background": "#340160"
+    // "titleBar.activeBackground": "#701D64"
+  },
+  "go.inlayHints.compositeLiteralFields": true,
+  "go.inlayHints.compositeLiteralTypes": true,
+  "go.inlayHints.functionTypeParameters": true,
+  "go.inlayHints.parameterNames": true,
+  "go.inlayHints.rangeVariableTypes": true,
+  "go.inlayHints.constantValues": true,
+  "files.associations": {
+    ".env*": "dotenv"
+  },
+  "editor.tokenColorCustomizations": {
+    "[*Light*]": {
+      "textMateRules": [
+        {
+          "scope": "ref.matchtext",
+          "settings": {
+            "foreground": "#000"
+          }
+        }
+      ]
     },
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
-    "redhat.telemetry.enabled": true,
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+    "[*Dark*]": {
+      "textMateRules": [
+        {
+          "scope": "ref.matchtext",
+          "settings": {
+            "foreground": "#fff"
+          }
+        }
+      ]
     },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "textMateRules": []
+  },
+  "dotenv.enableAutocloaking": false,
+  "goOutliner.extendExplorerTab": true,
+  "vim.easymotion": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "j"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "d"],
+      "after": ["d", "d"]
     },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+    {
+      "before": ["<C-n>"],
+      "commands": [":nohl"]
     },
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-    },
-    "window.commandCenter": true,
-    "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
-    "github.copilot.enable": {
-        "*": true,
-        "yaml": false,
-        "plaintext": false,
-        "markdown": false
-    },
-    "[jsonc]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-    },
-    "files.associations": {
-        "*.java": "java"
-    },
-    "[java]": {
-    },
-    "bazel.enableCodeLens": true,
-    "bazel.queriesShareServer": true,
-    "explorer.confirmDragAndDrop": false,
-    "[yaml]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-    },
-    "workbench.iconTheme": "material-icon-theme",
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
-    },
-    "go.formatTool": "gofmt",
-    "editor.wordWrap": "on",
-    "window.zoomLevel": -1,
-    "workbench.colorCustomizations": {
-        "titleBar.activeBackground": "#333333",
-        "titleBar.activeForeground": "#FEFCFE"
-    },
-    "cSpell.enabled": false,
+    {
+      "before": ["K"],
+      "commands": ["lineBreakInsert"],
+      "silent": true
+    }
+  ],
+  "vim.leader": "<space>",
+  "vim.handleKeys": {
+    "<C-a>": false,
+    "<C-f>": false
+  }
 }
