@@ -11,5 +11,9 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
     "typescript": "*"
+  },
+  "dependencies": {
+    "eslint-plugin-sonarjs": "^0.23.0",
+    "eslint-plugin-unused-imports": "^3.0.0"
   }
 }
