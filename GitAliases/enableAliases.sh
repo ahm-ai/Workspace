@@ -33,7 +33,8 @@ git config --global alias.del "branch -D"
 git config --global alias.rmlocalBranches "!git branch | grep -v \"^\\*\" | xargs git branch -D"
 git config --global alias.bl "show-branch --color --list"
 git config --global alias.rs "!git reset --hard"
-git config --global alias.pullr "!f() { git stash; git pull origin main --rebase; git stash pop; }; f"
+git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD); git stash; git checkout main; git pull; git checkout $branch; git pull origin main --rebase; git stash pop; }; f"
+
 
 
 # The simpler way to delete all branches but keeping others like "tools" 
