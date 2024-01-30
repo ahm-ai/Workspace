@@ -20,7 +20,7 @@
     "forceConsistentCasingInFileNames": true  // Disallow inconsistently-cased references to the same file
   },
   "include": [
-    "src/**/*" // Include all files in the src folder
+    "files/**/*" // Include all files in the src folder
   ],
   "exclude": [
     "node_modules", // Exclude the node_modules directory

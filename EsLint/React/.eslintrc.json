@@ -15,5 +15,6 @@
         "react"
     ],
     "rules": {
+        "@typescript-eslint/semi": 0
     }
 }
