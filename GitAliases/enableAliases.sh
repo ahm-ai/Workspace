@@ -38,7 +38,7 @@ git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD);
 
 
 # The simpler way to delete all branches but keeping others like "tools" 
-git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs git branch -D; }; f
+git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs git branch -D; }; f"
 
 
 # Undo the commit
@@ -58,8 +58,8 @@ git config --global alias.cms "!git --no-pager log -10 --graph --pretty=format:'
 git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(green)(%cr) [%an]' --abbrev-commit -30"
 
 # Using FZF
-git config --global alias.cob '!f() { git checkout $(git branch | fzf --preview "git log "); }; f'
-# git config --global alias.cob "!f() { git checkout $(git branch | fzf --preview 'git log -n 1 --color=always  '); }; f"
+git config --global alias.cob '!f() { git checkout $(git branch | fzf --preview '\''git log'\''); }; f'
+
 git config --global alias.sq "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 
 # Git CLI
