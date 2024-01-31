@@ -38,8 +38,7 @@ git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD);
 
 
 # The simpler way to delete all branches but keeping others like "tools" 
-git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs -I {} git branch -D {}; }; f"
-``
+git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs git branch -D; }; f
 
 
 # Undo the commit
