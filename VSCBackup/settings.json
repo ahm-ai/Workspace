@@ -6,7 +6,7 @@
   "editor.inlineSuggest.enabled": true,
   "go.toolsManagement.autoUpdate": true,
   "editor.accessibilitySupport": "off",
-  "workbench.colorTheme": "Dracula",
+  "workbench.colorTheme": "Moonlight II Italic",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "workbench.startupEditor": "none",
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -20,13 +20,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {},
+  "explorer.sortOrder": "filesFirst",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
-
+  "redhat.telemetry.enabled": true,
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
@@ -58,7 +59,7 @@
   "[dockerfile]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
@@ -77,10 +78,41 @@
     }
   },
   "cSpell.enabled": false,
-  "workbench.colorCustomizations": {
-    "titleBar.activeForeground": "#FDF8FC",
-    "activityBar.background": "#340160"
-    // "titleBar.activeBackground": "#701D64"
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "workbench.colorCustomizations": {},
+  "files.exclude": {
+    "**/node_modules": true,
+    "bazel-*": true,
+    ".idea": true,
+    ".ijwb": true
   },
   "go.inlayHints.compositeLiteralFields": true,
   "go.inlayHints.compositeLiteralTypes": true,
@@ -116,36 +148,6 @@
   },
   "dotenv.enableAutocloaking": false,
   "goOutliner.extendExplorerTab": true,
-  "vim.easymotion": true,
-  "vim.incsearch": true,
-  "vim.useSystemClipboard": true,
-  "vim.useCtrlKeys": true,
-  "vim.hlsearch": true,
-  "vim.insertModeKeyBindings": [
-    {
-      "before": ["j", "j"],
-      "after": ["<Esc>"]
-    }
-  ],
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "d"],
-      "after": ["d", "d"]
-    },
-    {
-      "before": ["<C-n>"],
-      "commands": [":nohl"]
-    },
-    {
-      "before": ["K"],
-      "commands": ["lineBreakInsert"],
-      "silent": true
-    }
-  ],
-  "vim.leader": "<space>",
-  "vim.handleKeys": {
-    "<C-a>": false,
-    "<C-f>": false,
-    "<C-p>": false
-  }
+
+  "editor.formatOnSave": true
 }
