@@ -37,6 +37,8 @@ git config --global alias.rs "!git reset --hard"
 # Clears everything including untracked files
 git config --global alias.cleanup '!git reset --hard && git clean -fd'
 
+git config --global alias.pushToBranch '!f() { branch=$1; git push origin $(git branch --show-current):$branch --no-verify -f; }; f'
+
 
 git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD); git stash; git checkout main; git pull; git checkout $branch; git pull origin main --rebase; git stash pop; }; f"
 # Revert file to version in main <FILE NAME>
