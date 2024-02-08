@@ -34,8 +34,9 @@ git config --global alias.rmlocalBranches "!git branch | grep -v \"^\\*\" | xarg
 git config --global alias.bl "show-branch --color --list"
 # Reset hard but keeps untracked files
 git config --global alias.rs "!git reset --hard"
-# clear untracked files
-git config --global alias.clear 'clean -fd'
+# Clears everything including untracked files
+git config --global alias.cleanup '!git reset --hard && git clean -fd'
+
 
 git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD); git stash; git checkout main; git pull; git checkout $branch; git pull origin main --rebase; git stash pop; }; f"
 # Revert file to version in main <FILE NAME>
