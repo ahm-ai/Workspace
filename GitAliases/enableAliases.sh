@@ -34,6 +34,7 @@ git config --global alias.rmlocalBranches "!git branch | grep -v \"^\\*\" | xarg
 git config --global alias.bl "show-branch --color --list"
 git config --global alias.rs "!git reset --hard"
 git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD); git stash; git checkout main; git pull; git checkout $branch; git pull origin main --rebase; git stash pop; }; f"
+git config --global alias.revert-to-main '!f() { git checkout main -- "$1"; }; f'
 
 
 
@@ -45,7 +46,7 @@ git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \
 git config --global alias.undo "!git reset HEAD~1 --mixed"
 
 # Stash only changes no staged files
-git config --global alias.stu "!git stash --keep-index"
+git config --global alias.stash-ki "!git stash --keep-index"
 
 
 # Diffing
