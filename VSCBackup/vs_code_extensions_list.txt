@@ -23,7 +23,6 @@ foxundermoon.shell-format
 golang.go
 golang.go-nightly
 hashicorp.terraform
-huizhou.githd
 irongeek.vscode-env
 mhutchie.git-graph
 moppitz.vscode-extension-auto-import
