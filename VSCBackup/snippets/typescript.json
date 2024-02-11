@@ -1,0 +1,16 @@
+{
+    "Print Green Text": {
+        "prefix": "logg",
+        "body": [
+            "console.log('%c$1', 'color: green;');"
+        ],
+        "description": "Print text in green in the console"
+    },
+    "Print Purple Text": {
+        "prefix": "logp",
+        "body": [
+            "console.log('%c$1', 'color: purple;');"
+        ],
+        "description": "Print text in purple in the console"
+    }
+}

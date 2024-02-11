@@ -1,0 +1,16 @@
+{
+	"Print Green Text": {
+		"prefix": "soutg",
+		"body": [
+			"System.out.println(\"\\n\\u001B[32m\" + $1 + \"\\u001B[0m\\n\");"
+		],
+		"description": "Print text in green in the console with extra lines"
+	},
+	"Print Purple Text": {
+		"prefix": "soutp",
+		"body": [
+			"System.out.println(\"\\n\\u001B[35m\" + $1 + \"\\u001B[0m\\n\");"
+		],
+		"description": "Print text in purple in the console with extra lines"
+	}
+}

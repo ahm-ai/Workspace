@@ -39,24 +39,20 @@ git config --global alias.cleanup '!git reset --hard && git clean -fd'
 
 git config --global alias.pushToBranch '!f() { branch=$1; git push origin $(git branch --show-current):$branch --no-verify -f; }; f'
 
-
 git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD); git stash; git checkout main; git pull; git checkout $branch; git pull origin main --rebase; git stash pop; }; f"
 # Revert file to version in main <FILE NAME>
 git config --global alias.revert-to-main '!f() { git checkout main -- "$1"; }; f'
 # Diff only one file <FILE NAME>
 git config --global alias.diffmain '!f() { git diff main -- "$1"; }; f'
 
-
-# The simpler way to delete all branches but keeping others like "tools" 
+# The simpler way to delete all branches but keeping others like "tools"
 git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs git branch -D; }; f"
-
 
 # Undo the commit
 git config --global alias.undo "!git reset HEAD~1 --mixed"
 
 # Stash only changes no staged files
 git config --global alias.stash-ki "!git stash --keep-index"
-
 
 # Diffing
 git config --global alias.df "!git diff --name-only $1"
@@ -83,9 +79,7 @@ git config --global alias.alias "! git config --get-regexp ^alias\. | sed -e s/^
 git config --global alias.rb "!git rebase -i --autosquash main"
 git config --global alias.ls "log -1 HEAD --stat --no-pager"
 
-
 # Commit Aliases
 git config --global alias.amd "!git commit --amend --no-edit"
 
 echo "🚀 Aliases enabled"
-
