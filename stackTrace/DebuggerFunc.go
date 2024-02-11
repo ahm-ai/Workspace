@@ -69,13 +69,13 @@ func main() {
 	}
 
 	// Passing different types of variables to printValue
-	fmt.Println("Struct:")
+	fmt.Println("\033[32m" + "Struct:" + "\033[0m")
 	LogValue(person, 0)
 
-	fmt.Println("\nMap:")
+	fmt.Println("\033[32m" + "Map:" + "\033[0m")
 	LogValue(exampleMap, 0)
 
-	fmt.Println("\nSlice:")
+	fmt.Println("\033[32m" + "Slice:" + "\033[0m")
 	LogValue([]int{1, 2, 3}, 0)
 }
 
