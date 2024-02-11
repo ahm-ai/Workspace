@@ -3,49 +3,48 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
-// LogValue is a utility function to print any Go variable.
 func LogValue(v interface{}, depth int) {
 	rv := reflect.ValueOf(v)
-	prefix := ""
-	for i := 0; i < depth; i++ {
-		prefix += "  "
-	}
+	prefix := strings.Repeat("  ", depth)
 
-	// Handle proto.Message within the switch using a type assertion in the default case
 	switch rv.Kind() {
 	case reflect.Slice, reflect.Array:
+		fmt.Println(prefix + "[")
 		for i := 0; i < rv.Len(); i++ {
-			fmt.Println(prefix, "Index:", i)
 			LogValue(rv.Index(i).Interface(), depth+1)
 		}
+		fmt.Println(prefix + "]")
 	case reflect.Map:
+		fmt.Println(prefix + "{")
 		for _, key := range rv.MapKeys() {
-			fmt.Println(prefix, "Key:", key)
+			fmt.Print(prefix, "  ", key, ": ")
 			LogValue(rv.MapIndex(key).Interface(), depth+1)
 		}
+		fmt.Println(prefix + "}")
 	case reflect.Struct:
+		fmt.Println(prefix + "{")
 		for i := 0; i < rv.NumField(); i++ {
 			field := rv.Type().Field(i)
-			fmt.Println(prefix, "Field:", field.Name)
+			fmt.Print(prefix, "  ", field.Name, ": ")
 			LogValue(rv.Field(i).Interface(), depth+1)
 		}
+		fmt.Println(prefix + "}")
 	default:
-		// Check if the interface is a proto.Message as part of the default case
 		if msg, ok := v.(proto.Message); ok {
 			marshaledJson, err := protojson.Marshal(msg)
 			if err == nil {
-				fmt.Printf("%sProto Message (JSON): %s\n", prefix, string(marshaledJson))
+				fmt.Printf("%s%s\n", prefix, string(marshaledJson))
 			} else {
 				fmt.Printf("%sFailed to marshal proto message to JSON: %v\n", prefix, err)
 			}
 		} else {
-			// If not a proto.Message, print the value directly
-			fmt.Println(prefix, "Value:", rv.Interface())
+			fmt.Printf("%s%v\n", prefix, rv.Interface())
 		}
 	}
 }
@@ -66,7 +65,7 @@ func main() {
 	}
 
 	exampleMap := map[string]Person{
-		"key1": person,
+		"Person": person,
 	}
 
 	// Passing different types of variables to printValue
@@ -79,3 +78,10 @@ func main() {
 	fmt.Println("\nSlice:")
 	LogValue([]int{1, 2, 3}, 0)
 }
+
+// // Example output:
+// person = {
+// 	Name:    "John Doe",
+// 	Age:     30,
+// 	Friends: []string{"Jane Doe", "Bob Smith"},
+// }
