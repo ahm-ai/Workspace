@@ -1,5 +1,4 @@
-
-# INSTALL PLUGINS 
+# INSTALL PLUGINS
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
@@ -8,14 +7,13 @@
 
 #  https://dh4ihowhowe4s.cloudfront.net
 
-source ~/.ffmpegCommands 
-source ~/.ASCII_colors 
+source ~/.ffmpegCommands
+source ~/.ASCII_colors
 
 #  KILL PORTS
 function killPort {
   kill $(lsof -t -i:$1)
 }
-
 
 function getPluginsZsh {
   brew install zsh-completions
@@ -23,14 +21,11 @@ function getPluginsZsh {
   brew install zsh-syntax-highlighting
 }
 
- plugins=(
-      git 
-      zsh-autosuggestions 
-      zsh-syntax-highlighting
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
-
-
-
 
 function runTest {
   # git status -s | grep ".tsx\|.ts\|.js" | sed "s/\M//" | xargs yarn react-scripts test --
@@ -52,3 +47,6 @@ function cleanStaleBranches {
   git branch --merged | grep -v \* | xargs !git branch -D
 }
 
+function checkShaSum {
+  shasum -a 256 $1
+}
