@@ -1,0 +1,16 @@
+{
+    "Print Green Text": {
+        "prefix": "echog",
+        "body": [
+            "echo -e \"\\033[32m $1\\033[0m\""
+        ],
+        "description": "Print text in green in the terminal"
+    },
+    "Print Purple Text": {
+        "prefix": "echop",
+        "body": [
+            "echo -e \"\\033[35m $1\\033[0m\""
+        ],
+        "description": "Print text in purple in the terminal"
+    }
+}
