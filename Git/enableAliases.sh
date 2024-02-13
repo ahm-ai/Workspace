@@ -65,6 +65,7 @@ git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(m
 
 # Using FZF
 git config --global alias.cob '!f() { git checkout $(git branch | fzf --preview '\''git log'\''); }; f'
+git config --global alias.fzf-stash-apply '!f() { selected_stash=$(git stash list | fzf --height=10 --reverse | awk "{print \$1}" | sed "s/:$//"); if [ -z "$selected_stash" ]; then echo "No stash selected, exiting."; return; fi; git stash apply "$selected_stash"; }; f'
 
 git config --global alias.sq "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --squash"
 
