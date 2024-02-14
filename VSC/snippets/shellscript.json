@@ -2,15 +2,29 @@
     "Print Green Text": {
         "prefix": "echog",
         "body": [
-            "echo -e \"\\033[32m $1\\033[0m\""
+            "echo -e \"\\u001b[32m$1\\u001b[0m\""
         ],
         "description": "Print text in green in the terminal"
+    },
+    "Print Bold Green Text": {
+        "prefix": "echogb",
+        "body": [
+            "echo -e \"\\u001b[1;32m$1\\u001b[0m\""
+        ],
+        "description": "Print text in bold green in the terminal"
     },
     "Print Purple Text": {
         "prefix": "echop",
         "body": [
-            "echo -e \"\\033[35m $1\\033[0m\""
+            "echo -e \"\\u001b[35m$1\\u001b[0m\""
         ],
         "description": "Print text in purple in the terminal"
+    },
+    "Print Bold Purple Text": {
+        "prefix": "echopb",
+        "body": [
+            "echo -e \"\\u001b[1;35m$1\\u001b[0m\""
+        ],
+        "description": "Print text in bold purple in the terminal"
     }
 }

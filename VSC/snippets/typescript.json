@@ -2,15 +2,29 @@
     "Print Green Text": {
         "prefix": "logg",
         "body": [
-            "console.log('%c$1', 'color: green;');"
+            "console.log('\\u001b[32m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in green in the console"
+    },
+    "Print Bold Green Text": {
+        "prefix": "loggb",
+        "body": [
+            "console.log('\\u001b[1;32m%s\\u001b[0m', $1);"
+        ],
+        "description": "Print text in bold green in the console"
     },
     "Print Purple Text": {
         "prefix": "logp",
         "body": [
-            "console.log('%c$1', 'color: purple;');"
+            "console.log('\\u001b[35m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in purple in the console"
+    },
+    "Print Bold Purple Text": {
+        "prefix": "logpb",
+        "body": [
+            "console.log('\\u001b[1;35m%s\\u001b[0m', $1);"
+        ],
+        "description": "Print text in bold purple in the console"
     }
 }
