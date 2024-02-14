@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgres_
+    image: postgres:latest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: <DB_NAME>
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    container_name: flyway_
+    image: flyway/flyway:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - <LOCAL_PATH>:/flyway/sql
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/<DB_NAME>
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: password
+      FLYWAY_SCHEMAS: public
+      FLYWAY_LOCATIONS: filesystem:/flyway/sql
+      FLYWAY_CLEAN_DISABLED: "false"
+    command: clean migrate
+
+volumes:
+  postgres-data:
+    name: postgres_volume
