@@ -9,7 +9,7 @@ combineList() {
     output_file="${@: -1}"
 
     # Create or empty the output file if it already exists
-    >"$output_file"
+    # >"$output_file"
 
     # Loop through all arguments except the last one
     for file in "${@:1:$#-1}"; do
@@ -47,7 +47,7 @@ combineAllFromFolder() {
     fi
 
     # Create or empty the output file if it already exists
-    >"$output_file"
+    # >"$output_file"
 
     # Loop through each file in the directory
     for file in "$input_directory"/*; do

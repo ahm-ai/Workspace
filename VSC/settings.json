@@ -23,7 +23,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {},
-  "explorer.sortOrder": "filesFirst",
+  "explorer.sortOrder": "type",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
