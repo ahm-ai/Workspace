@@ -1,0 +1,31 @@
+# DIFFING
+[core]
+pager = delta
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+navigate = true
+light = false
+side-by-side = true
+features = decorations
+syntax-theme = Dracula
+line-numbers = true
+
+# Custom colors inspired by Dracula
+plus-color = "#50fa7b"                      # Added lines
+minus-color = "#ff5555"                     # Deleted lines
+syntax-theme = Dracula                      # Syntax highlighting theme
+file-style = "bold yellow"                  # File headers
+file-decoration-style = "bold yellow ul"    # Underline file headers
+commit-style = "bold yellow"                # Commit hash
+commit-decoration-style = "bold yellow box" # Box around commit hash
+hunk-header-style = "yellow"                # Hunk headers
+hunk-header-decoration-style = "yellow box" # Box around hunk headers
+
+[merge]
+conflictstyle = diff3
+
+[diff]
+colorMoved = default
