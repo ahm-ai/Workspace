@@ -4,7 +4,7 @@ IGNORE_FOLDERS=$2
 FILES_FOLDER="files"
 
 # Save uncommitted changes to a stash
-git -C "$REPO_PATH" stash push -m "temp-stash-for-lint-script"
+# git -C "$REPO_PATH" stash push -m "temp-stash-for-lint-script"
 
 # Switch to main branch and update
 git -C "$REPO_PATH" checkout main
@@ -14,10 +14,10 @@ git -C "$REPO_PATH" pull
 git -C "$REPO_PATH" checkout -
 
 # Reapply stashed changes
-git -C "$REPO_PATH" stash pop
+# git -C "$REPO_PATH" stash pop
 
 # Get list of modified JavaScript and TypeScript files compared to main branch
-MODIFIED_FILES=$(git -C "$REPO_PATH" diff --name-only main...HEAD |  grep -E '\.(js|ts|jsx|tsx)$')
+MODIFIED_FILES=$(git -C "$REPO_PATH" diff --name-only main...HEAD | grep -E '\.(js|ts|jsx|tsx)$')
 
 # Filter out files in ignored folders
 FILTERED_FILES=()
