@@ -2,56 +2,56 @@
     "Print Cyan Text": {
         "prefix": "logc",
         "body": [
-            "console.log('\\033[38;2;139;233;253m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;139;233;253m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula cyan in the console"
     },
     "Print Green Text Dracula": {
         "prefix": "logg",
         "body": [
-            "console.log('\\033[38;2;80;250;123m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;80;250;123m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula green in the console"
     },
     "Print Orange Text": {
         "prefix": "logo",
         "body": [
-            "console.log('\\033[38;2;255;184;108m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;255;184;108m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula orange in the console"
     },
     "Print Pink Text": {
         "prefix": "logpi",
         "body": [
-            "console.log('\\033[38;2;255;121;198m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;255;121;198m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula pink in the console"
     },
     "Print Purple Text Dracula": {
         "prefix": "logp",
         "body": [
-            "console.log('\\033[38;2;189;147;249m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;189;147;249m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula purple in the console"
     },
     "Print Red Text": {
         "prefix": "logr",
         "body": [
-            "console.log('\\033[38;2;255;85;85m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;255;85;85m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula red in the console"
     },
     "Print Yellow Text": {
         "prefix": "logy",
         "body": [
-            "console.log('\\033[38;2;241;250;140m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[38;2;241;250;140m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in Dracula yellow in the console"
     },
     "Print Bold Text": {
         "prefix": "logb",
         "body": [
-            "console.log('\\033[1m%s\\u001b[0m', $1);"
+            "console.log('\\u001b[1m%s\\u001b[0m', $1);"
         ],
         "description": "Print text in bold using Dracula theme"
     }
