@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const HAR_FILE = "flowbite.com.har";
-const JSON_API_FILE = "flowbite.json";
+const HAR_FILE = "";
+const JSON_API_FILE = "file.json";
 
 // Function to read HAR file and return its content as a JavaScript object
 function readHARFile(filePath) {
