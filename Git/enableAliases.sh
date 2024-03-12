@@ -65,7 +65,7 @@ git config --global alias.cml "!git --no-pager log --graph --pretty=format:'%C(m
 
 # Using FZF
 # git config --global alias.cob '!f() { git checkout $(git branch | fzf --preview '\''git log'\''); }; f'
-git config --global alias.cob '!f() { selected_branch=$(git branch --all | fzf --ansi --preview '\''git diff --name-only $(sed s/^..// <<< {}) main | sed "s/^/  /" && echo "\\nLog:\\n" && git log --oneline --graph --date=short --pretty=format:"%C(auto)%cd %h%d %s" $(sed s/^..// <<< {})'\''); selected_branch=$(echo $selected_branch | sed '\''s/.* //'\''); git checkout $selected_branch; }; f'
+git config --global alias.cob '!f() { selected_branch=$(git branch | fzf --ansi --preview '\''git diff --name-only $(sed s/^..// <<< {}) main | sed "s/^/  /" && echo "\\nLog:\\n" && git log --oneline --graph --date=short --pretty=format:"%C(auto)%cd %h%d %s" $(sed s/^..// <<< {})'\''); selected_branch=$(echo $selected_branch | sed '\''s/.* //'\''); git checkout $selected_branch; }; f'
 
 git config --global alias.fzf-stash-apply '!f() { selected_stash=$(git stash list | fzf --height=10 --reverse | awk "{print \$1}" | sed "s/:$//"); if [ -z "$selected_stash" ]; then echo "No stash selected, exiting."; return; fi; git stash apply "$selected_stash"; }; f'
 
