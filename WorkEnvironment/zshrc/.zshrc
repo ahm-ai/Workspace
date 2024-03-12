@@ -44,7 +44,6 @@ function formatR {
 }
 
 function cleanStaleBranches {
-
   git fetch --all --prune
   git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
   git branch --merged | grep -v \* | xargs !git branch -D
