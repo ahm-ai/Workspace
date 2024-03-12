@@ -1,9 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/atotto/clipboard"
@@ -16,41 +18,39 @@ type model struct {
 }
 
 func initialModel() model {
+	var functions []string
+	files := []string{
+		os.ExpandEnv("$HOME/.zshrc"),
+		// Add more file paths as needed
+	}
+
+	for _, file := range files {
+		functions = append(functions, readFunctions(file)...)
+	}
+
 	return model{
-		functions: readFunctions(os.ExpandEnv("$HOME/.zshrc")),
+		functions: functions,
 		cursor:    0,
 	}
 }
 
 func readFunctions(filename string) []string {
-	file, err := os.Open(filename)
+	content, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Println("Error opening file:", err)
-		os.Exit(1)
+		if !os.IsNotExist(err) {
+			fmt.Printf("Error reading file %s: %v\n", filename, err)
+		}
+		return []string{}
 	}
-	defer file.Close()
 
 	var functions []string
-	scanner := bufio.NewScanner(file)
-	funcStack := 0
-	var funcName string
+	regex := regexp.MustCompile(`(?m)^(?:function\s+)?([a-zA-Z0-9_]+)\s*\(\)\s*\{`)
 
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-
-		if strings.HasPrefix(line, "function ") {
-			funcName = strings.TrimSpace(strings.Split(line, "()")[0])
-			funcName = strings.TrimPrefix(funcName, "function ")
-			funcStack++
-		} else if strings.HasPrefix(line, funcName+"()") {
-			funcName = strings.TrimSpace(strings.Split(line, "()")[0])
-			funcStack++
-		} else if line == "}" && funcStack > 0 {
-			funcStack--
-			if funcStack == 0 {
-				functions = append(functions, funcName)
-				funcName = ""
-			}
+	matches := regex.FindAllStringSubmatch(string(content), -1)
+	for _, match := range matches {
+		if len(match) > 1 {
+			functionName := match[1]
+			functions = append(functions, fmt.Sprintf("%s (%s)", functionName, filepath.Base(filename)))
 		}
 	}
 
@@ -74,7 +74,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 		case "enter":
-			functionName := m.functions[m.cursor]
+			functionName := strings.Split(m.functions[m.cursor], " ")[0]
 			err := clipboard.WriteAll(functionName)
 			if err != nil {
 				fmt.Println("Error copying function to clipboard:", err)
