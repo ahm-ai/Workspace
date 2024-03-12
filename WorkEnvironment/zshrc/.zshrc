@@ -49,6 +49,10 @@ function cleanStaleBranches {
   git branch --merged | grep -v \* | xargs !git branch -D
 }
 
+function deleteAllRemotebranches {
+  git branch -r | grep -v "origin/main\|origin/HEAD" | xargs -I {} git push origin --delete {}
+}
+
 function checkShaSum {
   shasum -a 256 $1
 }
