@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-function useEventEmitter<T = any>(event: EmitterType, listener: (data: T) => void) {
+function useEventEmitter<T = any>(event: any, listener: (data: T) => {}) {
+    const [state, setState] = useState();
+
     useEffect(() => {
         const subscriber: (data: T) => void = (data) => { listener(data) };
         eventEmitter.on(event, subscriber);
@@ -8,7 +10,9 @@ function useEventEmitter<T = any>(event: EmitterType, listener: (data: T) => voi
         return () => {
             eventEmitter.off(event, subscriber);
         };
-    }, [event, listener]);
+    }, [event]);
+
+    return state
 }
 
 export default useEventEmitter;
