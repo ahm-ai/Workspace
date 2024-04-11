@@ -56,3 +56,11 @@ function deleteAllRemotebranches {
 function checkShaSum {
   shasum -a 256 $1
 }
+
+function useDifferentSSH {
+    # List ssh keys 
+    ls -al ~/.ssh
+    # Add new ssh key
+    ssh-add  ~/.ssh/id_rsa.pub
+    ssh-add ~/.ssh/id_rsa
+}

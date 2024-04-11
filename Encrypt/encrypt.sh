@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # The string to be encrypted
-input_string="Hello, World!"
+input_string=""
 
 # Check if the encryption password is set as an environment variable
 if [ -z "$ENCRYPTION_PASSWORD" ]; then
