@@ -117,5 +117,6 @@
     "textMateRules": []
   },
   "dotenv.enableAutocloaking": false,
-  "goOutliner.extendExplorerTab": true
+  "goOutliner.extendExplorerTab": true,
+  "editor.minimap.enabled": false
 }
