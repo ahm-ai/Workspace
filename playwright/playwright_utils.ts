@@ -48,7 +48,7 @@ export async function getRequestBody(page) {
     let data = null;
     await page.route('**/<URL_PATH>', async (route, request) => {
         // Intercept the request
-        const postData = await request.postData(); // Get the request data
+        const postData = await request.postData(); // Get the request data.
         data = JSON.parse(postData || '{}'); // Parse the request data as JSON
     
         // Manipulate the request if needed

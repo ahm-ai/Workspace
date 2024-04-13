@@ -1,0 +1,12 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Proxy.js",
+  "scripts": {
+    "start": "nodemon --watch /*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
