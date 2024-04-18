@@ -46,7 +46,8 @@ git config --global alias.revert-to-main '!f() { git checkout main -- "$1"; }; f
 git config --global alias.diffmain '!f() { git diff main -- "$1"; }; f'
 
 # The simpler way to delete all branches but keeping others like "tools"
-git config --global alias.purgeExcept "!f() { branch=\$1; git branch | grep -v \"^*\" | grep -v \"\$branch\" | xargs git branch -D; }; f"
+git config --global alias.purgeExcept "!f() { git branch | grep -v \"^*\" | grep -v \"^\\s*main\\b\" | grep -v \"^\\s*_workspace\" | xargs git branch -D; }; f"
+
 
 # Undo the commit
 git config --global alias.undo "!git reset HEAD~1 --mixed"
