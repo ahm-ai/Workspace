@@ -1,7 +1,9 @@
 #!/bin/bash
 
+
+export ENCRYPTION_PASSWORD=""
 # The string to be encrypted
-encrypted_string=" "
+encrypted_string=""
 
 # Check if the encryption password is set as an environment variable
 if [ -z "$ENCRYPTION_PASSWORD" ]; then

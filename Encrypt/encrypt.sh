@@ -4,6 +4,7 @@ export ENCRYPTION_PASSWORD=""
 # The string to be encrypted
 read -r -d '' input_string <<'EOF'
 
+
 EOF
 
 # Check if the encryption password is set as an environment variable
