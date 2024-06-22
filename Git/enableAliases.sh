@@ -88,4 +88,8 @@ git config --global alias.ls "log -1 HEAD --stat --no-pager"
 # Commit Aliases
 git config --global alias.amd "!git commit --amend --no-edit"
 
+
+git config --global alias.copy-folder '!f() { git checkout $1 -- $2 && git reset; }; f'
+# git copy-folder <source_branch> <folder_path>
+
 echo "🚀 Aliases enabled"
