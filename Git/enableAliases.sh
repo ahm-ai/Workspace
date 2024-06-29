@@ -43,7 +43,7 @@ git config --global alias.pullr "!f() { branch=$(git symbolic-ref --short HEAD);
 # Revert file to version in main <FILE NAME>
 git config --global alias.revert-to-main '!f() { git checkout main -- "$1"; }; f'
 # Diff only one file <FILE NAME>
-git config --global alias.diffmain '!f() { git diff main -- "$1"; }; f'
+git config --global alias.diffmain '!f() { git fetch origin && git diff origin/main -- "$@"; }; f'
 
 # The simpler way to delete all branches but keeping others like "tools"
 git config --global alias.purgeExcept "!f() { git branch | grep -v \"^*\" | grep -v \"^\\s*main\\b\" | grep -v \"^\\s*_workspace\" | xargs git branch -D; }; f"
@@ -56,7 +56,7 @@ git config --global alias.undo "!git reset HEAD~1 --mixed"
 git config --global alias.stash-ki "!git stash --keep-index"
 
 # Diffing
-git config --global alias.df "!git diff --name-only $1"
+git config --global alias.df '!f() { git diff --name-status $(git merge-base HEAD origin/$1) HEAD; }; f'
 git config --global alias.dfp "!git diff --name-only HEAD~"
 git config --global alias.fff "difftool -t vimdiff -y"
 
