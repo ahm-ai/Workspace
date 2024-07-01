@@ -99,3 +99,11 @@ const defaultIgnoredItems = ['node_modules', '.git', 'dist', '.DS_Store', '.svg'
 const ignoredItems = [...defaultIgnoredItems, ...additionalFolders];
 
 generateFileTree(projectPath, ignoredItems, ignoredWords);
+
+
+// Run Example:
+// ```
+
+// node script.js /path/to/project ignored_folder1,ignored_folder2 ignoreWord1,ignoreWord2
+
+// ```
