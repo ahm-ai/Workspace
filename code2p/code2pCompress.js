@@ -35,42 +35,52 @@ function compressContent(content, fileExtension) {
     return content;
 }
 
-function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], outputPath = 'file_tree.txt') {
+function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], includeOnly = [], outputPath = 'file_tree.txt') {
     rootPath = rootPath.replace(/^~(?=$|\/|\\)/, os.homedir());
     if (!fs.existsSync(rootPath)) {
         console.error(`Error: The directory "${rootPath}" does not exist.`);
         process.exit(1);
     }
     
-    let output = `Project Path: ${rootPath}\n\n`; // Keep Project Path uncompressed
+    let output = `Project Path: ${rootPath}\n\n`;
     output += `Source Tree:\n\n\`\`\`\n`;
     const fileContents = {};
 
-    function shouldIgnore(itemPath, item) {
-        if (item.startsWith('.') && !ignoredItems.includes(item)) return true; // Ignore hidden files unless explicitly included
+    function shouldInclude(itemPath, item) {
         const isDirectory = fs.statSync(itemPath).isDirectory();
         const extension = path.extname(item);
         
+        // Always include directories
+        if (isDirectory) return true;
+        
+        // If includeOnly is not empty, only include files with specified extensions
+        if (includeOnly.length > 0) {
+            return includeOnly.includes(extension);
+        }
+        
+
+        // Default behavior: include all files not explicitly ignored
+        if (item.startsWith('.') || ignoredItems.includes(item)) return false;
+
+        if (ignoredItems.some(pattern => new RegExp(pattern).test(itemPath))) return false;
+
         if (ignoredItems.some(ignoredItem => 
-            (isDirectory && ignoredItem === item) || 
-            (!isDirectory && (ignoredItem === item || ignoredItem === extension))
+            (ignoredItem === item || ignoredItem === extension)
         )) {
-            return true;
+            return false;
         }
-
-        // Check if file name contains any of the ignored words
-        if (!isDirectory && ignoredWords.some(word => item.toLowerCase().includes(word.toLowerCase()))) {
-            return true;
+        if (ignoredWords.some(word => item.toLowerCase().includes(word.toLowerCase()))) {
+            return false;
         }
-
-        return false;
+        
+        return true;
     }
 
     function buildTree(currentPath, prefix = '', isLast = true) {
         let items;
         try {
             items = fs.readdirSync(currentPath)
-                .filter(item => !shouldIgnore(path.join(currentPath, item), item));
+                .filter(item => shouldInclude(path.join(currentPath, item), item));
         } catch (error) {
             console.error(`Error reading directory ${currentPath}: ${error.message}`);
             return;
@@ -129,9 +139,10 @@ const args = process.argv.slice(2);
 const projectPath = args[0] || process.env.FOLDER_PATH || '.';
 const additionalFolders = (args[1] || process.env.FOLDERIGNORE || '').split(',').filter(Boolean);
 const ignoredWords = (args[2] || process.env.WORDIGNORE || '').split(',').filter(Boolean);
+const includeOnly = (args[3] || process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
 const defaultIgnoredItems = ['node_modules', '.git', 'dist', '.DS_Store', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.webp', '.mp4', '.webm', '.ogg', '.mp3', '.wav', '.flac', '.aac', '.wma', '.m4a', '.flv', '.avi', '.mov', '.wmv', '.mkv', '.mpg', '.mpeg', '.3gp', '.json', '.lock'];
 
 // Combine default ignored items with additional folders
 const ignoredItems = [...defaultIgnoredItems, ...additionalFolders];
 
-generateFileTree(projectPath, ignoredItems, ignoredWords);
+generateFileTree(projectPath, ignoredItems, ignoredWords, includeOnly);
