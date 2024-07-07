@@ -134,15 +134,51 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], includ
     }
 }
 
-// CLI argument parsing
+
+// Updated CLI argument parsing
 const args = process.argv.slice(2);
-const projectPath = args[0] || process.env.FOLDER_PATH || '.';
-const additionalFolders = (args[1] || process.env.FOLDERIGNORE || '').split(',').filter(Boolean);
-const ignoredWords = (args[2] || process.env.WORDIGNORE || '').split(',').filter(Boolean);
-const includeOnly = (args[3] || process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+let projectPath = '.';
+let additionalFolders = [];
+let ignoredWords = [];
+let includeOnly = [];
+let outputFileName = 'file_tree.txt';
+
+
+
+args.forEach(arg => {
+    const [key, value] = arg.split('=');
+    switch (key) {
+        case 'location':
+            projectPath = value;
+            break;
+        case 'ignore':
+            additionalFolders = value.split(',').filter(Boolean);
+            break;
+        case 'wordignore':
+            ignoredWords = value.split(',').filter(Boolean);
+            break;
+        case 'includeonly':
+            includeOnly = value.split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+            break;
+        case 'output':
+            outputFileName = value;
+            break;
+    }
+});
+
+// Use environment variables as fallback
+projectPath = projectPath || process.env.FOLDER_PATH || '.';
+additionalFolders = additionalFolders.length ? additionalFolders : (process.env.FOLDERIGNORE || '').split(',').filter(Boolean);
+ignoredWords = ignoredWords.length ? ignoredWords : (process.env.WORDIGNORE || '').split(',').filter(Boolean);
+includeOnly = includeOnly.length ? includeOnly : (process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+outputFileName = outputFileName || process.env.OUTPUT_FILE || 'file_tree.txt';
+
 const defaultIgnoredItems = ['node_modules', '.git', 'dist', '.DS_Store', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.webp', '.mp4', '.webm', '.ogg', '.mp3', '.wav', '.flac', '.aac', '.wma', '.m4a', '.flv', '.avi', '.mov', '.wmv', '.mkv', '.mpg', '.mpeg', '.3gp', '.json', '.lock'];
 
 // Combine default ignored items with additional folders
 const ignoredItems = [...defaultIgnoredItems, ...additionalFolders];
 
-generateFileTree(projectPath, ignoredItems, ignoredWords, includeOnly);
+generateFileTree(projectPath, ignoredItems, ignoredWords, includeOnly, outputFileName);
+
+
+// node script.js location=/path/to/project ignore=folder1,folder2 wordignore=word1,word2 includeonly=js,ts output=custom_output.txt
