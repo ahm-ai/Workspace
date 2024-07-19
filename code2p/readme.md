@@ -8,11 +8,11 @@
 ```sh
 
 function prompt() {
-
     local location=""
-    local ignore=""
-    local wordignore=""
-    local includeonly=""
+    local excludeFolders=""
+    local ignoreFileNames=""
+    local includeExtOnly=""
+    local ignorePatterns=""
     local output=""
 
     # Parse arguments
@@ -21,14 +21,17 @@ function prompt() {
             --location=*)
                 location="${1#*=}"
                 ;;
-            --ignore=*)
-                ignore="${1#*=}"
+            --excludeFolders=*)
+                excludeFolders="${1#*=}"
                 ;;
-            --wordignore=*)
-                wordignore="${1#*=}"
+            --ignoreFileNames=*)
+                ignoreFileNames="${1#*=}"
                 ;;
-            --includeonly=*)
-                includeonly="${1#*=}"
+            --includeExtOnly=*)
+                includeExtOnly="${1#*=}"
+                ;;
+            --ignorePatterns=*)
+                ignorePatterns="${1#*=}"
                 ;;
             --output=*)
                 output="${1#*=}"
@@ -45,15 +48,15 @@ function prompt() {
     local cmd="node ~/Documents/Workspace/code2p/code2pCompress.js"
     
     # Add options to the command if they're set
-    [[ -n "$location" ]] && cmd+=" location=$location"
-    [[ -n "$ignore" ]] && cmd+=" ignore=$ignore"
-    [[ -n "$wordignore" ]] && cmd+=" wordignore=$wordignore"
-    [[ -n "$includeonly" ]] && cmd+=" includeonly=$includeonly"
-    [[ -n "$output" ]] && cmd+=" output=$output"
+    [[ -n "$location" ]] && cmd+=" --location='$location'"
+    [[ -n "$excludeFolders" ]] && cmd+=" --excludeFolders='$excludeFolders'"
+    [[ -n "$ignoreFileNames" ]] && cmd+=" --ignoreFileNames='$ignoreFileNames'"
+    [[ -n "$includeExtOnly" ]] && cmd+=" --includeExtOnly='$includeExtOnly'"
+    [[ -n "$ignorePatterns" ]] && cmd+=" --ignorePatterns='$ignorePatterns'"
+    [[ -n "$output" ]] && cmd+=" --output='$output'"
 
     # Execute the command
     eval "$cmd"
 }
-
 
 ```

@@ -35,7 +35,7 @@ function compressContent(content, fileExtension) {
     return content;
 }
 
-function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], includeOnly = [], outputPath = 'file_tree.txt') {
+function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], includeOnly = [], outputPath = 'file_tree.txt') {
     rootPath = rootPath.replace(/^~(?=$|\/|\\)/, os.homedir());
     if (!fs.existsSync(rootPath)) {
         console.error(`Error: The directory "${rootPath}" does not exist.`);
@@ -49,30 +49,31 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], includ
     function shouldInclude(itemPath, item) {
         const isDirectory = fs.statSync(itemPath).isDirectory();
         const extension = path.extname(item);
+        const baseName = path.basename(item, extension);
         
-        // Always include directories
-        if (isDirectory) return true;
+        // Check for ignored patterns (applied to both files and folders)
+        if (ignoredPatterns.some(pattern => {
+            const regex = new RegExp(pattern, 'i');
+            return regex.test(item) || regex.test(baseName) || regex.test(extension);
+        })) {
+            return false;
+        }
+
+        // For directories, we only need to check ignored patterns and items
+        if (isDirectory) {
+            return !ignoredItems.includes(item);
+        }
         
         // If includeOnly is not empty, only include files with specified extensions
         if (includeOnly.length > 0) {
             return includeOnly.includes(extension);
         }
-        
 
         // Default behavior: include all files not explicitly ignored
         if (item.startsWith('.') || ignoredItems.includes(item)) return false;
 
         if (ignoredItems.some(pattern => new RegExp(pattern).test(itemPath))) return false;
 
-        if (ignoredItems.some(ignoredItem => 
-            (ignoredItem === item || ignoredItem === extension)
-        )) {
-            return false;
-        }
-        if (ignoredWords.some(word => item.toLowerCase().includes(word.toLowerCase()))) {
-            return false;
-        }
-        
         return true;
     }
 
@@ -134,33 +135,30 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], includ
     }
 }
 
-
 // Updated CLI argument parsing
 const args = process.argv.slice(2);
 let projectPath = '.';
-let additionalFolders = [];
-let ignoredWords = [];
-let includeOnly = [];
+let excludeFolders = [];
+let ignorePatterns = [];
+let includeExtOnly = [];
 let outputFileName = 'file_tree.txt';
-
-
 
 args.forEach(arg => {
     const [key, value] = arg.split('=');
     switch (key) {
-        case 'location':
+        case '--location':
             projectPath = value;
             break;
-        case 'ignore':
-            additionalFolders = value.split(',').filter(Boolean);
+        case '--excludeFolders':
+            excludeFolders = value.split(',').filter(Boolean);
             break;
-        case 'wordignore':
-            ignoredWords = value.split(',').filter(Boolean);
+        case '--ignorePatterns':
+            ignorePatterns = value.split(',').filter(Boolean);
             break;
-        case 'includeonly':
-            includeOnly = value.split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+        case '--includeExtOnly':
+            includeExtOnly = value.split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
             break;
-        case 'output':
+        case '--output':
             outputFileName = value;
             break;
     }
@@ -168,17 +166,14 @@ args.forEach(arg => {
 
 // Use environment variables as fallback
 projectPath = projectPath || process.env.FOLDER_PATH || '.';
-additionalFolders = additionalFolders.length ? additionalFolders : (process.env.FOLDERIGNORE || '').split(',').filter(Boolean);
-ignoredWords = ignoredWords.length ? ignoredWords : (process.env.WORDIGNORE || '').split(',').filter(Boolean);
-includeOnly = includeOnly.length ? includeOnly : (process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+excludeFolders = excludeFolders.length ? excludeFolders : (process.env.FOLDERIGNORE || '').split(',').filter(Boolean);
+ignorePatterns = ignorePatterns.length ? ignorePatterns : (process.env.PATTERNIGNORE || '').split(',').filter(Boolean);
+includeExtOnly = includeExtOnly.length ? includeExtOnly : (process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
 outputFileName = outputFileName || process.env.OUTPUT_FILE || 'file_tree.txt';
 
 const defaultIgnoredItems = ['node_modules', '.git', 'dist', '.DS_Store', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.webp', '.mp4', '.webm', '.ogg', '.mp3', '.wav', '.flac', '.aac', '.wma', '.m4a', '.flv', '.avi', '.mov', '.wmv', '.mkv', '.mpg', '.mpeg', '.3gp', '.json', '.lock'];
 
 // Combine default ignored items with additional folders
-const ignoredItems = [...defaultIgnoredItems, ...additionalFolders];
+const ignoredItems = [...defaultIgnoredItems, ...excludeFolders];
 
-generateFileTree(projectPath, ignoredItems, ignoredWords, includeOnly, outputFileName);
-
-
-// node script.js location=/path/to/project ignore=folder1,folder2 wordignore=word1,word2 includeonly=js,ts output=custom_output.txt
+generateFileTree(projectPath, ignoredItems, ignorePatterns, includeExtOnly, outputFileName);
