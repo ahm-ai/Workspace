@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "name": "Search Google",
+      "description": "Performs a Google search",
+      "commandToExecute": [
+        {
+          
+
+          "event": "INPUT",
+          "slector": "form textarea",
+          "value": "Hi"
+        },
+        {
+          "event": "CLICK",
+          "slector": "input[name='btnK']"
+        }
+      ]
+    }
+  ]

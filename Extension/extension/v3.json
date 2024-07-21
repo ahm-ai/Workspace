@@ -1,0 +1,48 @@
+{
+    "manifest_version": 3,
+    "name": "openAI",
+    "description": "Desc",
+    "version": "1.0.0",
+    "author": "openAI",
+    "icons": {
+        "16": "./assets/16.png",
+        "48": "./assets/48.png",
+        "128": "./assets/128.png",
+        "180": "./assets/180.png"
+    },
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "openAI"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://localhost/*",
+                "https://*.tailwindcss.com/*"
+            ],
+            "js": [
+                "./dist/custom.js",
+                "./content.js"
+            ],
+            "css": [
+                "./dist/index.css"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "declarativeContent",
+        "storage",
+        "tabs",
+        "notifications",
+        "webNavigation",
+        "clipboardRead",
+        "clipboardWrite"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://cdn.tailwindcss.com "
+    }
+}
