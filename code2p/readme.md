@@ -5,7 +5,10 @@
 ```
 
 
+
+
 ```sh
+
 
 function prompt() {
     local location=""
@@ -46,17 +49,35 @@ function prompt() {
 
     # Construct the command
     local cmd="node ~/Documents/Workspace/code2p/code2pCompress.js"
-    
+
     # Add options to the command if they're set
-    [[ -n "$location" ]] && cmd+=" --location='$location'"
-    [[ -n "$excludeFolders" ]] && cmd+=" --excludeFolders='$excludeFolders'"
-    [[ -n "$ignoreFileNames" ]] && cmd+=" --ignoreFileNames='$ignoreFileNames'"
-    [[ -n "$includeExtOnly" ]] && cmd+=" --includeExtOnly='$includeExtOnly'"
-    [[ -n "$ignorePatterns" ]] && cmd+=" --ignorePatterns='$ignorePatterns'"
-    [[ -n "$output" ]] && cmd+=" --output='$output'"
+    [[ -n "$location" ]] && cmd+=" --location=$(printf %q "$location")"
+    [[ -n "$excludeFolders" ]] && cmd+=" --excludeFolders=$(printf %q "$excludeFolders")"
+    [[ -n "$ignoreFileNames" ]] && cmd+=" --ignoreFileNames=$(printf %q "$ignoreFileNames")"
+    [[ -n "$includeExtOnly" ]] && cmd+=" --includeExtOnly=$(printf %q "$includeExtOnly")"
+    [[ -n "$ignorePatterns" ]] && cmd+=" --ignorePatterns=$(printf %q "$ignorePatterns")"
+    [[ -n "$output" ]] && cmd+=" --output=$(printf %q "$output")"
 
     # Execute the command
+    echo "Executing: $cmd"  # Debug line
     eval "$cmd"
 }
+
+```
+
+
+
+
+
+
+```sh
+
+prompt \
+  --location="./" \
+  --excludeFolders="" \
+  --ignoreFileNames="" \
+  --includeExtOnly=" \
+  --ignorePatterns="" \
+  --output="output.txt"
 
 ```
