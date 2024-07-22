@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import config from './config.json';
 import { Button } from '@/components/ui/button';
-
-
 
 export default function App() {
   const [commands, setCommands] = useState([]);
   const [lastExecuted, setLastExecuted] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setCommands(config);
+    setLoading(true);
+    chrome.runtime.sendMessage({ action: 'getConfig' }, (response) => {
+      if (chrome.runtime.lastError) {
+        setError(chrome.runtime.lastError.message);
+      } else if (response && response.config) {
+        setCommands(response.config);
+      } else {
+        setError('Failed to load config');
+      }
+      setLoading(false);
+    });
   }, []);
 
   const handleCommandClick = (command) => {
@@ -26,6 +34,19 @@ export default function App() {
       });
     });
   };
+
+  if (loading) {
+    return <div className="p-4">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive" className="m-4">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -44,18 +65,16 @@ export default function App() {
               <CardDescription>{command.description}</CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button className=" bg-slate-800 text-white " onClick={() => handleCommandClick(command)}>
+              <Button 
+                className="bg-slate-800 text-white hover:bg-slate-700" 
+                onClick={() => handleCommandClick(command)}
+              >
                 Execute
               </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
-
-
-
-
-
 
       {lastExecuted && (
         <Alert className="mt-6">

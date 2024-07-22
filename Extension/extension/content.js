@@ -1,80 +1,92 @@
 // content.js
-const configMap = [
-  {
-    id: 1,
-    name: "Search Google",
-    description: "Performs a Google search",
-    url: "google.com",
-    commandToExecute: [
-      {
-        event: "INPUT",
-        selector: "form textarea",
-        value: "Hi",
-      },
-      {
-        event: "CLICK",
-        selector: "input[name='btnK']",
-      },
-    ],
-  },
-];
+let configMap = [];
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("from a content script:" + "from the extension");
-  console.log({ request, sender });
+// Fetch config from background script
+function fetchConfig() {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({ action: 'getConfig' }, (response) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else if (response && response.config) {
+        resolve(response.config);
+      } else {
+        reject('Failed to fetch config from background script');
+      }
+    });
+  });
+}
 
-  if (request.action === "executeCommand") {
-    executeCommand(request.command);
-    sendResponse({ status: "Command execution started" });
+// Execute a single command
+async function executeSingleCommand(command) {
+  const element = document.querySelector(command.selector);
+  if (!element) {
+    return;
   }
-});
 
+  switch (command.event) {
+    case "CLICK":
+      element.click();
+      break;
+    case "INPUT":
+      element.value = command.value;
+      element.dispatchEvent(new Event("input", { bubbles: true }));
+      break;
+    case "SUBMIT":
+      if (element.tagName.toLowerCase() === "form") {
+        element.submit();
+      }
+      break;
+  }
+
+  // Add a small delay after executing the command
+  await new Promise((resolve) => setTimeout(resolve, 500));
+}
+
+// Execute a series of commands
 async function executeCommand(commandToExecute) {
   for (const command of commandToExecute) {
-    console.log({ selector: command?.selector });
-    const element = document.querySelector(command.selector);
-    if (!element) {
-      console.error(`Element not found: ${command.selector}`);
-      continue;
-    }
-
-    switch (command.event) {
-      case "CLICK":
-        element.click();
-        break;
-      case "INPUT":
-        element.value = command.value;
-        element.dispatchEvent(new Event("input", { bubbles: true }));
-        break;
-      case "SUBMIT":
-        if (element.tagName.toLowerCase() === "form") {
-          element.submit();
-        } else {
-          console.error("SUBMIT event can only be used with form elements");
-        }
-        break;
-      default:
-        console.error(`Unknown event type: ${command.event}`);
-    }
-
-    // Add a small delay between commands
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await executeSingleCommand(command);
   }
 }
 
-async function init() {
-  console.log("Current URL:", window.location.href);
+// Check and execute commands based on current URL
+async function checkAndExecuteCommands() {
+  const currentUrl = window.location.href;
   for (const config of configMap) {
-    if (window.location.href.includes(config.url)) {
-      console.log(`Matched configuration: ${config.name}`);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      for (const command of config.commandToExecute) {
-        console.log("Executing command:", command);
-        await executeCommand(command);
-      }
+    if (currentUrl.includes(config.url)) {
+      await executeCommand(config.commandToExecute);
     }
   }
 }
 
-// init();
+// Listen for messages from the background script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "checkAndExecute") {
+    checkAndExecuteCommands();
+    sendResponse({ status: "Checking and executing commands" });
+  } else if (request.action === "executeCommand") {
+    if (request.command) {
+      executeCommand(request.command);
+      sendResponse({ status: "Command execution started" });
+    } else {
+      sendResponse({ status: "Command not found" });
+    }
+  }
+  return true; // Indicates that the response is sent asynchronously
+});
+
+// Initialize the content script
+async function init() {
+  
+  try {
+    configMap = await fetchConfig();
+    console.log("INIT", configMap);
+    checkAndExecuteCommands();
+  } catch (error) {
+    // Error handling could be implemented here if needed
+  }
+}
+
+// Run the initialization
+init();
+

@@ -3,6 +3,8 @@
       "id": 1,
       "name": "Search Google",
       "description": "Performs a Google search",
+      "cicle": "INIT",
+      "url": "",
       "commandToExecute": [
         {
           "event": "INPUT",
