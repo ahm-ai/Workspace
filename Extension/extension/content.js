@@ -5,13 +5,10 @@ let configMap = [];
 function fetchConfig() {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage({ action: 'getConfig' }, (response) => {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else if (response && response.config) {
-        resolve(response.config);
-      } else {
-        reject('Failed to fetch config from background script');
-      }
+      if (response && response.config) {
+        return resolve(response.config);
+      } 
+      reject('Failed to fetch config from background script');
     });
   });
 }
@@ -19,9 +16,7 @@ function fetchConfig() {
 // Execute a single command
 async function executeSingleCommand(command) {
   const element = document.querySelector(command.selector);
-  if (!element) {
-    return;
-  }
+  if (!element) return;
 
   switch (command.event) {
     case "CLICK":
@@ -59,34 +54,35 @@ async function checkAndExecuteCommands() {
   }
 }
 
-// Listen for messages from the background script
+// Listen for messages from the background script or custom.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "checkAndExecute") {
-    checkAndExecuteCommands();
-    sendResponse({ status: "Checking and executing commands" });
-  } else if (request.action === "executeCommand") {
-    if (request.command) {
-      executeCommand(request.command);
-      sendResponse({ status: "Command execution started" });
-    } else {
-      sendResponse({ status: "Command not found" });
-    }
+  switch (request.action) {
+    case "checkAndExecute":
+      checkAndExecuteCommands();
+      sendResponse({ status: "Checking and executing commands" });
+      break;
+    case "executeCommand":
+      if (request.command) {
+        executeCommand(request.command);
+        sendResponse({ status: "Command execution started" });
+      } 
+      break;
+    default:
+      sendResponse({ status: "Unknown action" });
+      break;
   }
   return true; // Indicates that the response is sent asynchronously
 });
 
+
 // Initialize the content script
 async function init() {
-  
   try {
     configMap = await fetchConfig();
     console.log("INIT", configMap);
     checkAndExecuteCommands();
-  } catch (error) {
-    // Error handling could be implemented here if needed
-  }
+  } catch {}
 }
 
-// Run the initialization
 init();
 

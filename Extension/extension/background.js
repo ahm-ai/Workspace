@@ -25,16 +25,23 @@ chrome.runtime.onInstalled.addListener(() => {
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('Background script received message:', request);
-    
-    if (request.action === 'getConfig') {
-        console.log('Sending config:', config);
-        sendResponse({ config: config });
-        return true; // Indicates that the response is sent asynchronously
-    } else if (request.action === 'executeCommand') {
-        chrome.tabs.sendMessage(sender.tab.id, request);
-        sendResponse({ status: "Command execution started" });
-        return true;
-    }
+  console.log('Background script received message:', request);
+  
+  switch (request.action) {
+      case 'getConfig':
+          console.log('Sending config:', config);
+          sendResponse({ config: config });
+          return true; // Indicates that the response is sent asynchronously
+      
+      case 'executeCommand':
+          chrome.tabs.sendMessage(sender.tab.id, request);
+          sendResponse({ status: "Command execution started" });
+          return true;
+      
+      default:
+          console.log('Unknown action:', request.action);
+          sendResponse({ error: "Unknown action" });
+          return false;
+  }
+  
 });
-
