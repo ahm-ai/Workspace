@@ -9,7 +9,6 @@
 
 ```sh
 
-
 function prompt() {
     local location=""
     local excludeFolders=""
@@ -17,6 +16,7 @@ function prompt() {
     local includeExtOnly=""
     local ignorePatterns=""
     local output=""
+    local maxDepth=""
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -39,6 +39,9 @@ function prompt() {
             --output=*)
                 output="${1#*=}"
                 ;;
+            --maxDepth=*)
+                maxDepth="${1#*=}"
+                ;;
             *)
                 echo "Unknown option: $1"
                 return 1
@@ -57,6 +60,7 @@ function prompt() {
     [[ -n "$includeExtOnly" ]] && cmd+=" --includeExtOnly=$(printf %q "$includeExtOnly")"
     [[ -n "$ignorePatterns" ]] && cmd+=" --ignorePatterns=$(printf %q "$ignorePatterns")"
     [[ -n "$output" ]] && cmd+=" --output=$(printf %q "$output")"
+    [[ -n "$maxDepth" ]] && cmd+=" --maxDepth=$(printf %q "$maxDepth")"
 
     # Execute the command
     echo "Executing: $cmd"  # Debug line
@@ -76,8 +80,9 @@ prompt \
   --location="./" \
   --excludeFolders="" \
   --ignoreFileNames="" \
-  --includeExtOnly=" \
+  --includeExtOnly="" \
   --ignorePatterns="" \
-  --output="output.txt"
+  --output="output.txt" \
+  --maxDepth=5
 
 ```

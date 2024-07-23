@@ -35,7 +35,7 @@ function compressContent(content, fileExtension) {
     return content;
 }
 
-function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], includeOnly = [], outputPath = 'file_tree.txt') {
+function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], includeOnly = [], outputPath = 'file_tree.txt', maxDepth = Infinity) {
     rootPath = rootPath.replace(/^~(?=$|\/|\\)/, os.homedir());
     if (!fs.existsSync(rootPath)) {
         console.error(`Error: The directory "${rootPath}" does not exist.`);
@@ -77,7 +77,9 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], inc
         return true;
     }
 
-    function buildTree(currentPath, prefix = '', isLast = true) {
+    function buildTree(currentPath, prefix = '', isLast = true, depth = 0) {
+        if (depth > maxDepth) return;
+
         let items;
         try {
             items = fs.readdirSync(currentPath)
@@ -103,7 +105,7 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], inc
             output += `${linePrefix}${item}\n`;
 
             if (stats.isDirectory()) {
-                buildTree(itemPath, newPrefix, isLastItem);
+                buildTree(itemPath, newPrefix, isLastItem, depth + 1);
             } else {
                 try {
                     let content = fs.readFileSync(itemPath, 'utf8');
@@ -135,13 +137,14 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], inc
     }
 }
 
-// Updated CLI argument parsing
+// CLI argument parsing
 const args = process.argv.slice(2);
 let projectPath = '.';
 let excludeFolders = [];
 let ignorePatterns = [];
 let includeExtOnly = [];
 let outputFileName = 'file_tree.txt';
+let maxDepth = Infinity;
 
 args.forEach(arg => {
     const [key, value] = arg.split('=');
@@ -161,6 +164,13 @@ args.forEach(arg => {
         case '--output':
             outputFileName = value;
             break;
+        case '--maxDepth':
+            maxDepth = parseInt(value, 10);
+            if (isNaN(maxDepth) || maxDepth < 0) {
+                console.error('Invalid maxDepth value. Using default (Infinity).');
+                maxDepth = Infinity;
+            }
+            break;
     }
 });
 
@@ -170,10 +180,11 @@ excludeFolders = excludeFolders.length ? excludeFolders : (process.env.FOLDERIGN
 ignorePatterns = ignorePatterns.length ? ignorePatterns : (process.env.PATTERNIGNORE || '').split(',').filter(Boolean);
 includeExtOnly = includeExtOnly.length ? includeExtOnly : (process.env.INCLUDEONLY || '').split(',').filter(Boolean).map(ext => ext.startsWith('.') ? ext : `.${ext}`);
 outputFileName = outputFileName || process.env.OUTPUT_FILE || 'file_tree.txt';
+maxDepth = process.env.MAX_DEPTH ? parseInt(process.env.MAX_DEPTH, 10) : maxDepth;
 
 const defaultIgnoredItems = ['node_modules', '.git', 'dist', '.DS_Store', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.webp', '.mp4', '.webm', '.ogg', '.mp3', '.wav', '.flac', '.aac', '.wma', '.m4a', '.flv', '.avi', '.mov', '.wmv', '.mkv', '.mpg', '.mpeg', '.3gp', '.json', '.lock'];
 
 // Combine default ignored items with additional folders
 const ignoredItems = [...defaultIgnoredItems, ...excludeFolders];
 
-generateFileTree(projectPath, ignoredItems, ignorePatterns, includeExtOnly, outputFileName);
+generateFileTree(projectPath, ignoredItems, ignorePatterns, includeExtOnly, outputFileName, maxDepth);
