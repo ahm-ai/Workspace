@@ -1,0 +1,28 @@
+
+{
+  "folders": [
+    {
+      "path": ""
+    },
+    {
+      "path": ""
+    }
+  ],
+  "settings": {
+    "workbench.colorCustomizations": {
+      "activityBar.foreground": "#4bffbd",
+      "searchBar.background": "#1e1e1e",
+      "inputOption.activeForeground": "#4bffbd",
+      "editorWidget.border": "#4bffbd",
+      "titleBar.activeForeground": "#4bffbd",
+      "menubar.selectionForeground": "#4bffbd",
+      "menu.foreground": "#4bffbd",
+      "toolbar.activeForeground": "#4bffbd",
+      "statusBar.foreground": "#4bffbd"
+    },
+    "search.exclude": {
+      "**/*.web": true,
+      "**/*.snap": true
+    }
+  }
+}
