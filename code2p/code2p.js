@@ -9,7 +9,7 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], output
         process.exit(1);
     }
     
-    let output = `Project Path: ${rootPath}\n\nSource Tree:\n\n\`\`\`\n`;
+    let output = `Project Path: ${rootPath}\n\nSource Tree:\n`;
     const fileContents = {};
 
     function shouldIgnore(itemPath, item) {
@@ -72,12 +72,12 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredWords = [], output
     }
 
     buildTree(rootPath, '', true);
-    output += '```\n';
+    output += '\n';
 
     // Add file contents to the output
     for (const [filePath, content] of Object.entries(fileContents)) {
         const fullPath = path.join(rootPath, filePath);
-        output += `\n\`${fullPath}\`:\n\n\`\`\`\`\`\`${path.extname(filePath).slice(1)}\n${content}\n\`\`\`\`\`\`\n`;
+        output += `${fullPath}:\n\n ${path.extname(filePath).slice(1)}\n${content} \n`;
     }
 
     try {

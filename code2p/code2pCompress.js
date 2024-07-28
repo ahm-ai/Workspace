@@ -43,7 +43,7 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], inc
     }
     
     let output = `Project Path: ${rootPath}\n\n`;
-    output += `Source Tree:\n\n\`\`\`\n`;
+    output += `Source Tree:\n`;
     const fileContents = {};
 
     function shouldInclude(itemPath, item) {
@@ -121,12 +121,12 @@ function generateFileTree(rootPath, ignoredItems = [], ignoredPatterns = [], inc
     }
 
     buildTree(rootPath, '', true);
-    output += '```\n';
+    output += '\n';
 
     // Add file contents to the output
     for (const [filePath, content] of Object.entries(fileContents)) {
         const fullPath = path.join(rootPath, filePath);
-        output += `\n\`${fullPath}\`:\n\n\`\`\`\`\`\`${path.extname(filePath).slice(1)}\n${content}\n\`\`\`\`\`\`\n`;
+        output += `\n#### ${fullPath}:\n${content} \n`;
     }
 
     try {

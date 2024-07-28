@@ -55,6 +55,8 @@ git config --global alias.undo "!git reset HEAD~1 --mixed"
 # Stash only changes no staged files
 git config --global alias.stash-ki "!git stash --keep-index"
 
+git config --global alias.stash-unstaged '!f() { git stash save --include-untracked --keep-index "$@"; }; f'
+
 # Diffing
 git config --global alias.df '!f() { git diff --name-status $(git merge-base HEAD origin/$1) HEAD; }; f'
 git config --global alias.dfp "!git diff --name-only HEAD~"
