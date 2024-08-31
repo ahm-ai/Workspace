@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Extension",
+  "version": "1.0",
+  "description": "Extension",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js", "popup.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["modules/module_one.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
