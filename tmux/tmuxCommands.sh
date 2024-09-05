@@ -12,6 +12,9 @@ tmux list-sessions
 tmux kill-server
 
 
-
 # apply config
 tmux source-file ~/.tmux.conf
+
+
+# install plugins
+~/.tmux/plugins/tpm/bin/install_plugins
