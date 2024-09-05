@@ -18,7 +18,6 @@ git config --global color.diff.meta "yellow bold"
 git config --global color.diff.frag "magenta bold"
 git config --global color.diff.old "red bold"
 git config --global color.diff.new "green bold"
-git config --global diff.colorMoved zebra
 
 git config --global color.status.added "yellow"
 git config --global color.status.changed "green"
