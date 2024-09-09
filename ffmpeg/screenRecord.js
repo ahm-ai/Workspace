@@ -2,6 +2,9 @@ const { spawn, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
+
+const QUALITY = 25; // 0 - 100
+
 function getDateTime() {
   const now = new Date();
   return now.toISOString().replace(/:/g, '-').replace(/\..+/, '');
@@ -82,12 +85,17 @@ async function startRecording() {
     const resolution = getScreenResolution();
     console.log(`Detected screen resolution: ${resolution}`);
 
+      // Calculate CRF value based on QUALITY
+    // CRF range is 0-51, where 0 is lossless, 23 is default, and 51 is worst quality
+    // We'll invert the QUALITY scale so that 100 quality = 0 CRF, and 0 quality = 51 CRF
+    const crf = Math.round((100 - QUALITY) * 0.51);
+
     const ffmpegCommand = [
       '-f', 'avfoundation',
       '-i', `${screenIndex}:${audioIndex}`,
       '-c:v', 'libx264',
       '-preset', 'veryfast',
-      '-crf', '23',
+      '-crf', crf.toString(), // 23 is default
       '-c:a', 'aac',
       '-b:a', '192k',
       '-movflags', '+faststart',
