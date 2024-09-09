@@ -1,0 +1,14 @@
+{
+    "keyboard.dispatch": "keyCode",
+    "editor.cursorSurroundingLines": 999,
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "editor.scrollBeyondLastLine": false,
+    "editor.smoothScrolling": true,
+    "vscode-neovim.useCtrlKeysForNormalMode": true,
+    "vscode-neovim.useCtrlKeysForInsertMode": true,
+    "editor.autoClosingBrackets": "never",
+    "editor.autoClosingQuotes": "never",
+    "vscode-neovim.neovimInitVimPaths": [
+      "~/.config/nvim/init.vim"
+    ]
+  }
