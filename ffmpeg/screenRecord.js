@@ -1,6 +1,5 @@
 const { spawn } = require('child_process');
 const path = require('path');
-const readline = require('readline');
 const fs = require('fs');
 
 function getDateTime() {
@@ -11,94 +10,131 @@ function getDateTime() {
 const outputDir = path.join(process.env.HOME, 'Desktop');
 const outputFile = path.join(outputDir, `screen_recording_${getDateTime()}.mp4`);
 
-console.log('Listing available input devices...');
-const listDevices = spawn('ffmpeg', ['-f', 'avfoundation', '-list_devices', 'true', '-i', '']);
-
-let deviceList = '';
-listDevices.stderr.on('data', (data) => {
-  deviceList += data.toString();
-});
-
-listDevices.on('close', () => {
-  console.log(deviceList);
-  promptUser();
-});
-
-function promptUser() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  rl.question('Enter screen device index (default 2): ', (screenIndex) => {
-    rl.question('Enter audio device index (default 2): ', (audioIndex) => {
-      rl.close();
-      startRecording(screenIndex || '2', audioIndex || '2');
+function listDevices() {
+  return new Promise((resolve, reject) => {
+    const listDevices = spawn('ffmpeg', ['-f', 'avfoundation', '-list_devices', 'true', '-i', '']);
+    let deviceList = '';
+    listDevices.stderr.on('data', (data) => {
+      deviceList += data.toString();
+    });
+    listDevices.on('close', (code) => {
+      const devices = {
+        audio: [],
+        video: []
+      };
+      const lines = deviceList.split('\n');
+      let currentType = null;
+      for (const line of lines) {
+        if (line.includes('AVFoundation video devices:')) {
+          currentType = 'video';
+        } else if (line.includes('AVFoundation audio devices:')) {
+          currentType = 'audio';
+        } else if (currentType && line.includes('] ')) {
+          const match = line.match(/\[(\d+)\]\s(.+)/);
+          if (match) {
+            devices[currentType].push({
+              index: match[1],
+              name: match[2].trim()
+            });
+          }
+        }
+      }
+      if (devices.audio.length === 0 && devices.video.length === 0) {
+        reject(new Error(`No devices found. FFmpeg output: ${deviceList}`));
+      } else {
+        resolve(devices);
+      }
+    });
+    listDevices.on('error', (err) => {
+      reject(new Error(`Failed to start FFmpeg process: ${err.message}`));
     });
   });
 }
 
-function startRecording(screenIndex, audioIndex) {
-  const ffmpegCommand = [
-    '-f', 'avfoundation',
-    '-i', `${screenIndex}:${audioIndex}`,
-    '-c:v', 'libx264',
-    '-preset', 'ultrafast',
-    '-crf', '23',
-    '-c:a', 'aac',
-    '-movflags', '+faststart',
-    '-pix_fmt', 'yuv420p',
-    '-r', '30',
-    '-s', '1920x1080',
-    outputFile
-  ];
-
-  console.log('Starting screen recording...');
-  console.log(`Output file: ${outputFile}`);
-
-  const ffmpeg = spawn('ffmpeg', ffmpegCommand);
-
-  ffmpeg.stderr.on('data', (data) => {
-    console.log(`FFmpeg: ${data}`);
-  });
-
-  ffmpeg.on('error', (err) => {
-    console.error('FFmpeg process error:', err);
-  });
-
-  let gracefullyClosing = false;
-
-  function stopRecording() {
-    if (gracefullyClosing) return;
-    gracefullyClosing = true;
-    
-    console.log('Stopping recording gracefully...');
-    ffmpeg.stdin.write('q');
-    
-    setTimeout(() => {
-      if (ffmpeg.exitCode === null) {
-        console.log('Forcing FFmpeg to close...');
-        ffmpeg.kill('SIGKILL');
-      }
-    }, 10000);
-  }
-
-  ffmpeg.on('close', (code) => {
-    if (code === 0 || gracefullyClosing) {
-      if (fs.existsSync(outputFile) && fs.statSync(outputFile).size > 0) {
-        console.log('Recording completed successfully.');
-        console.log(`Output file: ${outputFile}`);
-      } else {
-        console.error('Output file is missing or empty.');
-      }
-    } else {
-      console.error(`FFmpeg process exited with code ${code}`);
-    }
-    process.exit();
-  });
-
-  process.on('SIGINT', stopRecording);
-  process.on('SIGTERM', stopRecording);
-
-  console.log('Press Ctrl+C to stop recording.');
+function findDeviceIndex(devices, type, name) {
+  const device = devices[type].find(d => d.name.includes(name));
+  return device ? device.index : null;
 }
+
+async function startRecording() {
+  try {
+    const devices = await listDevices();
+    const screenIndex = findDeviceIndex(devices, 'video', 'Capture screen 0');
+    const audioIndex = findDeviceIndex(devices, 'audio', 'BlackHole 2ch');
+
+    if (!screenIndex || !audioIndex) {
+      throw new Error('Could not find required devices');
+    }
+
+    const ffmpegCommand = [
+      '-f', 'avfoundation',
+      '-i', `${screenIndex}:${audioIndex}`,
+      '-c:v', 'libx264',
+      '-preset', 'ultrafast',
+      '-crf', '23',
+      '-c:a', 'aac',
+      '-movflags', '+faststart',
+      '-pix_fmt', 'yuv420p',
+      '-r', '30',
+      '-s', '1920x1080',
+      outputFile
+    ];
+
+    console.log('Starting screen recording...');
+    console.log(`Output file: ${outputFile}`);
+    console.log(`Using video device: [${screenIndex}] Capture screen 0`);
+    console.log(`Using audio device: [${audioIndex}] BlackHole 2ch`);
+
+    const ffmpeg = spawn('ffmpeg', ffmpegCommand);
+
+    ffmpeg.stderr.on('data', (data) => {
+      console.log(`FFmpeg: ${data}`);
+    });
+
+    ffmpeg.on('error', (err) => {
+      console.error('FFmpeg process error:', err);
+    });
+
+    let gracefullyClosing = false;
+
+    function stopRecording() {
+      if (gracefullyClosing) return;
+      gracefullyClosing = true;
+      
+      console.log('Stopping recording gracefully...');
+      ffmpeg.stdin.write('q');
+      
+      setTimeout(() => {
+        if (ffmpeg.exitCode === null) {
+          console.log('Forcing FFmpeg to close...');
+          ffmpeg.kill('SIGKILL');
+        }
+      }, 10000);
+    }
+
+    ffmpeg.on('close', (code) => {
+      if (code === 0 || gracefullyClosing) {
+        if (fs.existsSync(outputFile) && fs.statSync(outputFile).size > 0) {
+          console.log('Recording completed successfully.');
+          console.log(`Output file: ${outputFile}`);
+        } else {
+          console.error('Output file is missing or empty.');
+        }
+      } else {
+        console.error(`FFmpeg process exited with code ${code}`);
+      }
+      process.exit();
+    });
+
+    process.on('SIGINT', stopRecording);
+    process.on('SIGTERM', stopRecording);
+
+    console.log('Press Ctrl+C to stop recording.');
+  } catch (error) {
+    console.error('Error starting recording:', error.message);
+    process.exit(1);
+  }
+}
+
+// Start the recording
+startRecording();

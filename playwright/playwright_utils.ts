@@ -1,7 +1,7 @@
 
 
 
-export async function selectRandomOptionFromDropdown( page, dropdownSelector, value?) {
+export async function selectRandomOptionFromDropdown(page, dropdownSelector, value?) {
 
   const combobox = await page.getByRole("combobox", { name: dropdownSelector });
   await combobox.click();
@@ -25,6 +25,12 @@ export async function waitForNetworkcall(page, pathUrl, timeout = 30000) {
         return response.url().includes(pathUrl) && response.ok();
       },
       { timeout }
+
+
+   
+     
+
+
     );
     const responseBody = await response.json();
     return responseBody;
@@ -45,15 +51,15 @@ export async function clickButtonWaitForResponse(page, buttonName, pathUrl) {
 
 // Sets the route listener to modify or get a copy of the request body.
 export async function getRequestBody(page) {
-    let data = null;
-    await page.route('**/<URL_PATH>', async (route, request) => {
-        // Intercept the request
-        const postData = await request.postData(); // Get the request data.
-        data = JSON.parse(postData || '{}'); // Parse the request data as JSON
-    
-        // Manipulate the request if needed
-    
-        // Continue the request
-        await route.continue();
-    });
+  let data = null;
+  await page.route('**/<URL_PATH>', async (route, request) => {
+    // Intercept the request
+    const postData = await request.postData(); // Get the request data.
+    data = JSON.parse(postData || '{}'); // Parse the request data as JSON
+
+    // Manipulate the request if needed
+
+    // Continue the request
+    await route.continue();
+  });
 }
