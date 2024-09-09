@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
@@ -9,6 +9,19 @@ function getDateTime() {
 
 const outputDir = path.join(process.env.HOME, 'Desktop');
 const outputFile = path.join(outputDir, `screen_recording_${getDateTime()}.mp4`);
+
+function getScreenResolution() {
+  try {
+    const output = execSync('system_profiler SPDisplaysDataType', { encoding: 'utf-8' });
+    const match = output.match(/Resolution: (\d+) x (\d+)/);
+    if (match) {
+      return `${match[1]}x${match[2]}`;
+    }
+  } catch (error) {
+    console.error('Error getting screen resolution:', error.message);
+  }
+  return '1920x1080';  // Fallback to 1080p if we can't detect the resolution
+}
 
 function listDevices() {
   return new Promise((resolve, reject) => {
@@ -66,17 +79,23 @@ async function startRecording() {
       throw new Error('Could not find required devices');
     }
 
+    const resolution = getScreenResolution();
+    console.log(`Detected screen resolution: ${resolution}`);
+
     const ffmpegCommand = [
       '-f', 'avfoundation',
       '-i', `${screenIndex}:${audioIndex}`,
       '-c:v', 'libx264',
-      '-preset', 'ultrafast',
+      '-preset', 'veryfast',
       '-crf', '23',
       '-c:a', 'aac',
+      '-b:a', '192k',
       '-movflags', '+faststart',
       '-pix_fmt', 'yuv420p',
-      '-r', '30',
-      '-s', '1920x1080',
+      '-r', '60',
+      '-s', resolution,
+      '-vsync', '1',
+      '-async', '1',
       outputFile
     ];
 
