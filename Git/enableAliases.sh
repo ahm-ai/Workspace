@@ -46,4 +46,6 @@ git config --global alias.alias "! git config --get-regexp ^alias\. | sed -e s/^
 git config --global alias.copy-folder '!f() { git checkout $1 -- $2 && git reset; }; f'
 git config --global alias.unstage 'restore --staged'
 
+git config --global alias.stash-fzf '!f() { git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -r git stash push -u --; }; f'
+
 echo "🚀 Aliases enabled"
