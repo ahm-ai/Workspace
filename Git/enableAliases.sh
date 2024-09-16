@@ -46,6 +46,21 @@ git config --global alias.alias "! git config --get-regexp ^alias\. | sed -e s/^
 git config --global alias.copy-folder '!f() { git checkout $1 -- $2 && git reset; }; f'
 git config --global alias.unstage 'restore --staged'
 
-git config --global alias.stash-fzf '!f() { git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -r git stash push -u --; }; f'
+git config --global alias.fzf-stash '!f() { git ls-files -m -o --exclude-standard | fzf -m --print0 | xargs -0 -r git stash push -u --; }; f'
+
+git config --global alias.fzf-diff '!f() { target_branch=$1; git diff --name-only $target_branch...HEAD | fzf --preview "git diff $target_branch...HEAD --color=always -- {}"; }; f'
+
+# List aliases
+git config --global alias.aliases '!f() { 
+    selected=$(git config --get-regexp ^alias\. | sed -e "s/^alias\.//" -e "s/\ /\ =\ /" | 
+        fzf --height 100% --preview "git config --global --get alias.{1}" --preview-window right:70%:wrap | 
+        cut -d" " -f1)
+    if [ -n "$selected" ]; then
+        echo "Running: git $selected"
+        git $selected
+    else
+        echo "No alias selected"
+    fi
+}; f'
 
 echo "🚀 Aliases enabled"
