@@ -63,4 +63,8 @@ git config --global alias.aliases '!f() {
     fi
 }; f'
 
+
+git config --global alias.branchdiff '!f() { git diff $1 $(git branch --show-current) > branch_diff.txt; }; f'
+
+
 echo "🚀 Aliases enabled"
