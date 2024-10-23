@@ -1,6 +1,6 @@
-const { spawn, execSync } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+import { spawn, execSync } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 
 
 const QUALITY = 25; // 0 - 100
