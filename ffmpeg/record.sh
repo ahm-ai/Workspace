@@ -12,6 +12,8 @@
 # You can find the exact names using: ffmpeg -f avfoundation -list_devices true -i ""
 SCREEN_DEVICE_NAME="Capture screen 0"
 # Recording parameters (adjust as needed)
+# Set OUTPUT_DIR to specify where to save the recording (e.g., /). Leave empty for current directory.
+OUTPUT_DIR="$HOME/Downloads"
 OUTPUT_FILENAME="screen_recording_$(date +%Y%m%d_%H%M%S).mp4" # Dynamic filename
 FRAMERATE="30"
 VIDEO_CODEC="libx264"
@@ -76,9 +78,17 @@ INPUT_SPEC="$SCREEN_IDX:$AUDIO_IDX"
 
 # --- Construct and Run FFmpeg Command ---
 echo "--------------------------------------------------"
+# Construct full output path
+if [ -n "$OUTPUT_DIR" ]; then
+    mkdir -p "$OUTPUT_DIR"
+    OUTPUT_PATH="$OUTPUT_DIR/$OUTPUT_FILENAME"
+else
+    OUTPUT_PATH="$OUTPUT_FILENAME"
+fi
+
 echo "Starting FFmpeg recording..."
 echo "Input Spec: $INPUT_SPEC"
-echo "Output file: $OUTPUT_FILENAME"
+echo "Output file: $OUTPUT_PATH"
 echo "Press 'q' or Ctrl+C in this terminal to stop recording."
 echo "--------------------------------------------------"
 
@@ -105,7 +115,7 @@ ffmpeg -f avfoundation \
     -vsync 2 \
     -async 1 \
     -use_wallclock_as_timestamps 1 \
-    "$OUTPUT_FILENAME"
+    "$OUTPUT_PATH"
 
 # Check FFmpeg exit status
 FFMPEG_EXIT_CODE=$?
@@ -114,6 +124,6 @@ if [ $FFMPEG_EXIT_CODE -ne 0 ] && [ $FFMPEG_EXIT_CODE -ne 255 ]; then
     echo "Warning: FFmpeg exited with status code $FFMPEG_EXIT_CODE."
 fi
 
-echo "--- Recording stopped. File saved as $OUTPUT_FILENAME ---"
+echo "--- Recording stopped. File saved as $OUTPUT_PATH ---"
 
 exit 0
