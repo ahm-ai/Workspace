@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "code-repository": {
+      "command": "npx",
+      "args": ["tsx", "<path to your code repo mcp server>", "<path to repository we want to mcp>"],
+      "env": {}
+    }
+  }
+}
